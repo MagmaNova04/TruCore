@@ -89,11 +89,11 @@ export default function Home() {
           <div className="tc-reveal relative" style={{ animationDelay: "120ms" }}>
             <div className="border border-[#8A8F96]/30 bg-[#EDEDED]">
               <img
-                src="https://images.unsplash.com/photo-1717386255773-1e3037c81788?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200"
-                alt="Industrial manufacturing environment — representative imagery"
+                src="https://static.prod-images.emergentagent.com/jobs/2aef6c48-2f9a-4860-9f17-68ffcdeff4d1/images/9e72299c8355693c4da33764e3512440c807cf25754ed9ccf8071fcfbd25f26f.jpeg"
+                alt="High-performance polyurethane and TPU engineered components — rollers, wheels, bushes, pads and precision moulded parts — with injection mould tooling in a clean engineering environment"
                 className="aspect-[4/3] w-full object-cover"
-                width="1200"
-                height="900"
+                width="1264"
+                height="848"
               />
             </div>
             <p className="mt-3 text-[12px] text-[#8A8F96]">
