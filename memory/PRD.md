@@ -116,3 +116,17 @@ comparison; analytics dashboard integration.
 2. Enable image/document uploads via object storage (replace URL-only media).
 3. Add drawing attachments to the quote form with authorised-only download.
 4. Publish the initial approved catalogue (categories → products → industries).
+
+## 2026-06 Global footer rebuild (shared component only)
+Rewrote `/app/frontend/src/components/site/Footer.jsx` only — no other file touched.
+- Compact premium navy footer: 4 cols desktop / 2 tablet / stacked mobile.
+- Company (logo, name, tagline, short polymer description, CIN U20131UP2026PTC251661),
+  Explore (8 existing routes; "Leadership & Team" label on existing /directors route),
+  Connect (Request an RFQ, Product Enquiry, Vendor / Supplier Enquiry, Research Collaboration,
+  Careers — all routed to existing /contact per user choice; no new pages/routes),
+  Contact Us (enquiry@truecoretec.com, truecoretec@gmail.com, +91 63948 12646, +91 76199 32431 —
+  each individually clickable mailto:/tel:) + "Send an Enquiry →" CTA to /contact.
+- Locations strip with divider-separated clickable Google Maps coord links (Lucknow 26.829381,80.865589;
+  Sandila G-37 27.106768,80.438754; Sandila G-38 27.106855,80.438616) opening in new tab.
+- Plain-text industry strip; bottom bar with © 2026 left, Privacy Policy | Staff Login | tagline right.
+- Verified by screenshot at 1920 and 390 widths; no footer overflow.
