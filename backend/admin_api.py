@@ -81,7 +81,8 @@ class IndustryIn(BaseModel):
 
 class DirectorIn(BaseModel):
     name: str = Field(min_length=2, max_length=120)
-    designation: str | None = Field(default=None, max_length=120)
+    designation: str | None = Field(default=None, max_length=160)
+    short_intro: str | None = Field(default=None, max_length=600)
     bio: str | None = Field(default=None, max_length=3000)
     photo_url: str | None = Field(default=None, max_length=600)
     linkedin_url: str | None = Field(default=None, max_length=400)

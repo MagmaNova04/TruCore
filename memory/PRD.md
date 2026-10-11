@@ -79,6 +79,10 @@ WCAG 2.2 AA intent; spam/rate-limit protection; no fabricated company claims.
   defaults restored afterwards.
 
 ## Known gaps / owner action required
+- Directors (2026-06-12): compact 3-up cards (118px circular portraits, short intro, View Profile)
+  with an on-page profile modal (720px desktop / ~94% mobile, X + outside-click + ESC close, body
+  scroll lock), an "Our Team" row of four functional capability cards and the closing line "One Team.
+  One Engineering Vision." Director records gained a `short_intro` field, editable in Admin → Directors.
 - `/industries` rebuilt as "Industries We Cater" (2026-06-12): split heading/intro hero, five equal
   industry cards with overlapping circular icons (Railways, Automotive & EV, Industrial, Mobility &
   Metro, Custom Engineering), five alternating detail sections with bullet capability lists, the

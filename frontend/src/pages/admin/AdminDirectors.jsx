@@ -6,7 +6,7 @@ import { api, apiError } from "@/lib/api";
 import { AdminHeading, DataTable, Modal, Field, StatusBadge } from "@/components/admin/AdminUI";
 
 const fetcher = (url) => api.get(url).then((r) => r.data);
-const BLANK = { name: "", designation: "", bio: "", photo_url: "", linkedin_url: "", sort_order: 0, status: "draft" };
+const BLANK = { name: "", designation: "", short_intro: "", bio: "", photo_url: "", linkedin_url: "", sort_order: 0, status: "draft" };
 
 export default function AdminDirectors() {
   const { data, mutate } = useSWR("/admin/directors", fetcher);
@@ -67,7 +67,12 @@ export default function AdminDirectors() {
         <form onSubmit={save} className="space-y-5" data-testid="director-form">
           <Field label="Full name" required><input required value={form.name} onChange={(e) => set("name", e.target.value)} className="tc-input" data-testid="director-name-input" /></Field>
           <Field label="Designation"><input value={form.designation || ""} onChange={(e) => set("designation", e.target.value)} className="tc-input" /></Field>
-          <Field label="Biography"><textarea rows={5} value={form.bio || ""} onChange={(e) => set("bio", e.target.value)} className="tc-input" /></Field>
+          <Field label="Short introduction" hint="2–3 lines shown on the directors page card">
+            <textarea rows={3} maxLength={600} value={form.short_intro || ""} onChange={(e) => set("short_intro", e.target.value)} className="tc-input" data-testid="director-short-intro-input" />
+          </Field>
+          <Field label="Full biography" hint="Shown in the View Profile popup. Separate paragraphs with a blank line.">
+            <textarea rows={6} value={form.bio || ""} onChange={(e) => set("bio", e.target.value)} className="tc-input" />
+          </Field>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Photo URL"><input value={form.photo_url || ""} onChange={(e) => set("photo_url", e.target.value)} className="tc-input" placeholder="https://" /></Field>
             <Field label="LinkedIn URL"><input value={form.linkedin_url || ""} onChange={(e) => set("linkedin_url", e.target.value)} className="tc-input" placeholder="https://" /></Field>

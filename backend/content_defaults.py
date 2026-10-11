@@ -272,37 +272,53 @@ INDUSTRIES_SECTIONS = [
      "image_url": ""},
 ]
 
-DIRECTORS = [    {
+DIRECTORS = [
+    {
         "name": "Shubhra Mishra",
-        "designation": "Chief Executive Officer & Director – Strategy, Sustainability & Innovation",
+        "designation": "Chief Executive Officer & Director \u2013 Strategy, Sustainability & Innovation",
+        "short_intro": ("Shubhra Mishra leads TrueCore Technologies with a research-led and "
+                        "future-focused approach, guiding the company's strategy, sustainability, "
+                        "innovation and organisational development across advanced materials and "
+                        "engineering applications."),
         "bio": ("Shubhra Mishra leads TrueCore Technologies with a research-led and future-focused "
                 "approach to advanced materials and responsible manufacturing. Her doctoral research "
                 "at IIT Jodhpur focuses on sustainability, governance and strategic foresight, with "
                 "emphasis on translating long-term sustainability goals into practical business and "
                 "technological actions.\n\nAt TrueCore, she leads corporate strategy, sustainability "
                 "integration, technology foresight, research collaboration and organisational "
-                "development across railway, automotive and industrial applications."),
+                "development across railway, automotive and industrial applications. She also "
+                "supports the company's development as a women-led engineering and advanced materials "
+                "enterprise."),
         "photo_url": AVATAR_FEMALE,
         "sort_order": 1,
     },
     {
         "name": "Arun Gopal Mishra",
-        "designation": "Director – Railway & Institutional Development",
-        "bio": ("Arun Gopal Mishra brings deep domain experience from Indian Railways, with exposure to "
-                "technical coordination, personnel management, employee welfare and institutional "
-                "operations.\n\nAt TrueCore, he contributes railway-sector understanding, institutional "
-                "insight and practical guidance for developing railway-focused products, business "
-                "opportunities and stakeholder relationships."),
+        "designation": "Director \u2013 Railway & Institutional Development",
+        "short_intro": ("Arun Gopal Mishra brings deep domain experience from Indian Railways and "
+                        "contributes practical railway-sector understanding, institutional insight "
+                        "and guidance for TrueCore's railway-focused development."),
+        "bio": ("Arun Gopal Mishra brings deep domain experience from Indian Railways, with exposure "
+                "to technical coordination, personnel management, employee welfare and institutional "
+                "operations.\n\nAt TrueCore, he contributes railway-sector understanding, "
+                "institutional insight and practical guidance for developing railway-focused "
+                "products, business opportunities and stakeholder relationships. His experience "
+                "supports the company's understanding of large institutional systems and the "
+                "practical requirements of the railway ecosystem."),
         "photo_url": AVATAR_MALE,
         "sort_order": 2,
     },
     {
         "name": "Flying Officer Sudhir Kumar Mishra (Retd.)",
-        "designation": "Director – Finance, Commercial & Technical Administration",
-        "bio": ("Flying Officer Sudhir Kumar Mishra (Retd.), Indian Air Force, brings strong experience "
-                "across finance, procurement, commercial administration and technical-support "
-                "environments, with significant service exposure at Base Repair Depots of the Indian "
-                "Air Force.\n\nHis background includes budgeting, accounts, tendering, bidding, vendor "
+        "designation": "Director \u2013 Finance, Commercial & Technical Administration",
+        "short_intro": ("Flying Officer Sudhir Kumar Mishra (Retd.), Indian Air Force, brings "
+                        "extensive experience in finance, procurement, tendering and "
+                        "technical-commercial administration, including significant exposure at Base "
+                        "Repair Depots."),
+        "bio": ("Flying Officer Sudhir Kumar Mishra (Retd.), Indian Air Force, brings extensive "
+                "experience across financial, commercial and technical-support functions, with "
+                "significant service exposure at Base Repair Depots of the Indian Air "
+                "Force.\n\nHis background includes budgeting, accounts, tendering, bidding, vendor "
                 "evaluation, procurement coordination, expenditure control and interaction with "
                 "technical maintenance and repair functions. At TrueCore, he supports financial "
                 "discipline, technical-commercial evaluation, procurement governance, vendor "
