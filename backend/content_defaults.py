@@ -7,6 +7,8 @@ Editing this file changes the defaults for a fresh install; run
 AVATAR_FEMALE = "https://static.prod-images.emergentagent.com/jobs/2aef6c48-2f9a-4860-9f17-68ffcdeff4d1/images/fc65a50dede23b16b8110b419984f778b8da0bb9a512699fd560589703714a46.jpeg"
 AVATAR_MALE = "https://static.prod-images.emergentagent.com/jobs/2aef6c48-2f9a-4860-9f17-68ffcdeff4d1/images/a3b0af62442e09e269abb24ffee479e7bd599da56874808a76b0eb948fbebf6c.jpeg"
 INDUSTRIES_HERO = "https://customer-assets-39nsmqrw.emergentagent.net/job_truecore-pu/artifacts/7fe6e11c5fdc4b45_image.png"
+UNIT_1_IMAGE = "https://images.unsplash.com/photo-1730705788367-dbd288c40ee7?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400"
+UNIT_2_IMAGE = "https://static.prod-images.emergentagent.com/jobs/2aef6c48-2f9a-4860-9f17-68ffcdeff4d1/images/3cecf89626995696ee117b7c97f74ce0c358d3e45cff2fd7974fe90a489e1cd1.jpeg"
 
 HOME_ABOUT = (
     "TrueCore Technologies Pvt. Ltd. is an advanced materials company focused on developing and "
@@ -25,10 +27,9 @@ ABOUT_INTRO = (
 )
 
 TECHNOLOGY_INTRO = (
-    "TrueCore follows an application-led technology approach, combining material science, engineering "
-    "insight and performance requirements to identify the right polymer and advanced material "
-    "solutions. Our focus is on reliability, durability and consistent performance, with a long-term "
-    "ambition to build globally relevant capabilities in engineered materials."
+    "TrueCore Technologies is developing a focused manufacturing platform for high-performance "
+    "polyurethane, TPU and engineered polymer components for railway, automotive and industrial "
+    "applications."
 )
 
 HOME_SECTIONS = [
@@ -106,33 +107,34 @@ ABOUT_SECTIONS = [
 ]
 
 TECHNOLOGY_SECTIONS = [
-    {"key": "intro", "heading": "Technology", "subheading": "", "body": TECHNOLOGY_INTRO, "image_url": ""},
-    {"key": "materials", "heading": "Polymer & Advanced Material Platforms", "subheading": "",
-     "body": ("Polyurethane, TPU, engineering thermoplastics, reinforced polymers and elastomeric "
-              "systems can be formulated and processed across a wide performance range, which makes "
-              "them suitable for wear, damping, sealing and load-bearing applications. Material "
-              "selection is driven by the application, not by a single standard grade."),
+    {"key": "intro", "heading": "Technology & Manufacturing",
+     "subheading": "Building Integrated Polymer Manufacturing Capabilities",
+     "body": ("TrueCore Technologies is developing a focused manufacturing platform for "
+              "high-performance polyurethane, TPU and engineered polymer components for railway, "
+              "automotive and industrial applications. Our manufacturing approach is built around "
+              "controlled processing, application-specific tooling, quality discipline and scalable "
+              "production."),
      "image_url": ""},
-    {"key": "assessment", "heading": "Application & Requirement Assessment", "subheading": "",
-     "body": ("We review operating loads, contact conditions, environment, temperature exposure and "
-              "expected service life before recommending a material or product configuration."),
+    {"key": "unit_1", "heading": "Unit 1 – Advanced Polymer Moulding",
+     "subheading": ("Railway components, automotive parts, precision TPU products and custom moulded "
+                    "engineering components."),
+     "body": ("Unit 1 is being developed for precision-moulded TPU and engineered polymer components, "
+              "supported by modern injection moulding technology, controlled material handling and "
+              "application-specific tooling."),
+     "image_url": UNIT_1_IMAGE},
+    {"key": "unit_2", "heading": "Unit 2 – Polyurethane Processing & Custom Engineering",
+     "subheading": ("Rollers, wheels, bushes, pads, liners, scrapers and other specialised industrial "
+                    "components."),
+     "body": ("Unit 2 is being developed for cast polyurethane and customised engineered components "
+              "requiring high wear resistance, resilience and durability."),
+     "image_url": UNIT_2_IMAGE},
+    {"key": "integrated", "heading": "Integrated Manufacturing Approach", "subheading": "",
+     "body": ("Together, the two units will provide TrueCore with complementary capabilities in TPU "
+              "moulding, cast polyurethane, tooling and custom product development, supporting the "
+              "company's growth across railway, mobility and industrial markets."),
      "image_url": ""},
-    {"key": "design", "heading": "Product Design & Customisation", "subheading": "",
-     "body": ("Products can be developed to customer drawings or jointly engineered from an "
-              "application brief, including dimensions, profiles and mounting requirements."),
-     "image_url": ""},
-    {"key": "process", "heading": "Material System, Tooling & Production Route", "subheading": "",
-     "body": ("Once the application is understood, we define the appropriate material system, tooling "
-              "and production route, leveraging suitable manufacturing capabilities for consistency "
-              "and repeatability."),
-     "image_url": ""},
-    {"key": "quality", "heading": "Quality Assurance & Inspection", "subheading": "",
-     "body": ("Inspection points are defined per product. Measurement and test capability is declared "
-              "only where it is available in-house or through an approved partner."),
-     "image_url": ""},
-    {"key": "collaboration", "heading": "Technical Collaboration", "subheading": "",
-     "body": ("We work with engineering and procurement teams on trials, iterative sampling and "
-              "progressive qualification for critical applications."),
+    {"key": "closing", "heading": "", "subheading": "",
+     "body": "Two complementary manufacturing platforms. One integrated engineering approach.",
      "image_url": ""},
 ]
 

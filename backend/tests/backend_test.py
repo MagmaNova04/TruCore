@@ -118,50 +118,84 @@ class TestAdminAuth:
         assert r.json()["role"] == "super_admin"
 
 
-# ---------- enquiries (public) ----------
+# ---------- enquiries (public) - new schema: city + enquirer_type required, requirement optional ----------
+def _base_payload(**overrides):
+    base = {
+        "name": "TEST QA User",
+        "company_name": "TEST_CO " + uuid.uuid4().hex[:6],
+        "email": f"test_{uuid.uuid4().hex[:6]}@example.com",
+        "phone": "+91 9876543210",
+        "city": "Pune",
+        "enquirer_type": "customer",
+    }
+    base.update(overrides)
+    return base
+
+
+def _fresh_ip_headers():
+    # Vary X-Forwarded-For to bypass per-IP rate-limit across tests
+    oct_ = uuid.uuid4().int % 254 + 1
+    return {"X-Forwarded-For": f"10.{oct_}.{oct_}.{oct_}"}
+
+
 class TestEnquiries:
-    def test_create_enquiry_valid(self):
-        payload = {
-            "name": "TEST QA User",
-            "company_name": "TEST_CO " + uuid.uuid4().hex[:6],
-            "email": f"test_{uuid.uuid4().hex[:6]}@example.com",
-            "phone": "+91 9876543210",
-            "requirement": "We need a sample of PU product for evaluation and testing phases.",
-        }
-        r = requests.post(f"{API}/enquiries", json=payload, timeout=15)
+    def test_create_enquiry_without_requirement_ok(self):
+        payload = _base_payload()
+        r = requests.post(f"{API}/enquiries", json=payload, headers=_fresh_ip_headers(), timeout=15)
         assert r.status_code == 201, r.text
         data = r.json()
         assert data["reference_number"].startswith("TC-")
         assert data["duplicate"] is False
         CREATED["enquiries"].append(data["reference_number"])
 
-    def test_create_enquiry_invalid_email(self):
-        r = requests.post(f"{API}/enquiries", json={
-            "name": "x", "company_name": "y", "email": "not-an-email",
-            "phone": "123", "requirement": "short",
-        }, timeout=10)
-        assert r.status_code == 422
-        body = r.json()
-        assert "errors" in body or "detail" in body
+    def test_create_enquiry_with_requirement_ok(self):
+        payload = _base_payload(requirement="Looking for a PU wear ring, OD 120mm.")
+        r = requests.post(f"{API}/enquiries", json=payload, headers=_fresh_ip_headers(), timeout=15)
+        assert r.status_code == 201, r.text
+        CREATED["enquiries"].append(r.json()["reference_number"])
 
-    def test_create_enquiry_short_requirement(self):
-        r = requests.post(f"{API}/enquiries", json={
-            "name": "QA Tester", "company_name": "QA Co",
-            "email": "qa@example.com", "phone": "+919876543210",
-            "requirement": "short",
-        }, timeout=10)
+    def test_create_enquiry_invalid_email(self):
+        p = _base_payload(email="not-an-email")
+        r = requests.post(f"{API}/enquiries", json=p, headers=_fresh_ip_headers(), timeout=10)
         assert r.status_code == 422
+
+    def test_create_enquiry_short_phone(self):
+        p = _base_payload(phone="12")
+        r = requests.post(f"{API}/enquiries", json=p, headers=_fresh_ip_headers(), timeout=10)
+        assert r.status_code == 422
+
+    def test_create_enquiry_missing_city(self):
+        p = _base_payload()
+        p.pop("city")
+        r = requests.post(f"{API}/enquiries", json=p, headers=_fresh_ip_headers(), timeout=10)
+        assert r.status_code == 422
+
+    def test_create_enquiry_bad_enquirer_type(self):
+        p = _base_payload(enquirer_type="hacker")
+        r = requests.post(f"{API}/enquiries", json=p, headers=_fresh_ip_headers(), timeout=10)
+        assert r.status_code == 422
+
+    def test_create_enquiry_missing_enquirer_type(self):
+        p = _base_payload()
+        p.pop("enquirer_type")
+        r = requests.post(f"{API}/enquiries", json=p, headers=_fresh_ip_headers(), timeout=10)
+        assert r.status_code == 422
+
+    def test_allowed_enquirer_types(self):
+        # All four allowed values should be accepted
+        for t in ["customer", "investor_analyst", "vendor", "job_seeker"]:
+            p = _base_payload(enquirer_type=t,
+                              email=f"typecheck_{t}_{uuid.uuid4().hex[:5]}@example.com")
+            r = requests.post(f"{API}/enquiries", json=p, headers=_fresh_ip_headers(), timeout=10)
+            assert r.status_code == 201, f"{t} rejected: {r.text}"
+            CREATED["enquiries"].append(r.json()["reference_number"])
 
     def test_enquiry_duplicate_suppression(self):
         email = f"dup_{uuid.uuid4().hex[:6]}@example.com"
-        requirement = "Looking for high performance PU rollers in bulk for conveyor systems."
-        payload = {
-            "name": "Dup User", "company_name": "TEST_DupCo",
-            "email": email, "phone": "+919876543210",
-            "requirement": requirement,
-        }
-        r1 = requests.post(f"{API}/enquiries", json=payload, timeout=10)
-        r2 = requests.post(f"{API}/enquiries", json=payload, timeout=10)
+        payload = _base_payload(email=email, city="Mumbai",
+                                requirement="PU rollers in bulk for conveyor systems.")
+        r1 = requests.post(f"{API}/enquiries", json=payload, headers=_fresh_ip_headers(), timeout=10)
+        r2 = requests.post(f"{API}/enquiries", json=payload, headers=_fresh_ip_headers(), timeout=10)
         assert r1.status_code == 201 and r2.status_code in (200, 201)
         d1 = r1.json(); d2 = r2.json()
         assert d1["reference_number"] == d2["reference_number"]
@@ -169,12 +203,8 @@ class TestEnquiries:
         CREATED["enquiries"].append(d1["reference_number"])
 
     def test_honeypot_rejected(self):
-        r = requests.post(f"{API}/enquiries", json={
-            "name": "Bot", "company_name": "SpamCo",
-            "email": "bot@example.com", "phone": "+919876543210",
-            "requirement": "I am a spam bot submission attempt via honeypot field.",
-            "company_website": "http://spam.example.com",
-        }, timeout=10)
+        p = _base_payload(company_website="http://spam.example.com")
+        r = requests.post(f"{API}/enquiries", json=p, headers=_fresh_ip_headers(), timeout=10)
         assert r.status_code == 400
 
 
@@ -290,15 +320,23 @@ class TestPageContent:
         assert g.status_code == 200, g.text
         page = g.json()
         sections = page.get("sections") or []
-        if sections:
-            sections[0]["heading"] = "QA Heading " + uuid.uuid4().hex[:4]
-            new_head = sections[0]["heading"]
+        if not sections:
+            return
+        original = sections[0].get("heading")
+        sections[0]["heading"] = "QA Heading " + uuid.uuid4().hex[:4]
+        new_head = sections[0]["heading"]
+        try:
             r = requests.patch(f"{API}/admin/content/home", headers=admin_headers,
                                json={"sections": sections, "status": "published"}, timeout=10)
             assert r.status_code == 200
             pub = requests.get(f"{API}/pages/home", timeout=10)
             assert pub.status_code == 200
             assert any(s.get("heading") == new_head for s in pub.json()["sections"])
+        finally:
+            # restore original heading so site content stays canonical
+            sections[0]["heading"] = original
+            requests.patch(f"{API}/admin/content/home", headers=admin_headers,
+                           json={"sections": sections, "status": "published"}, timeout=10)
 
 
 # ---------- RBAC ----------
@@ -313,8 +351,9 @@ class TestRBAC:
         }, timeout=10)
         assert r.status_code == 200, r.text
         CREATED["users"].append(r.json()["id"])
-        login = requests.post(f"{API}/auth/login",
+        login = requests.post(f"{API}/auth/login", headers=_fresh_ip_headers(),
                               json={"identifier": u, "password": pw}, timeout=10).json()
+        assert "access_token" in login, f"login response: {login}"
         return {"Authorization": f"Bearer {login['access_token']}"}
 
     @pytest.fixture(scope="class")
@@ -327,8 +366,9 @@ class TestRBAC:
         }, timeout=10)
         assert r.status_code == 200
         CREATED["users"].append(r.json()["id"])
-        login = requests.post(f"{API}/auth/login",
+        login = requests.post(f"{API}/auth/login", headers=_fresh_ip_headers(),
                               json={"identifier": u, "password": pw}, timeout=10).json()
+        assert "access_token" in login, f"login response: {login}"
         return {"Authorization": f"Bearer {login['access_token']}"}
 
     def test_content_mgr_cannot_list_enquiries(self, content_mgr):
@@ -375,6 +415,63 @@ class TestEnquiryAdmin:
         r = requests.get(f"{API}/admin/enquiries/export", headers=admin_headers, timeout=15)
         assert r.status_code == 200
         assert "reference_number" in r.text
+        # new columns must be present in CSV header
+        header = r.text.splitlines()[0]
+        assert "city" in header
+        assert "enquirer_type" in header
+
+
+# ---------- public pages (content_defaults) ----------
+class TestPublicContent:
+    def test_home_hero_blocks(self):
+        r = requests.get(f"{API}/pages/home", timeout=10)
+        assert r.status_code == 200
+        sections = r.json().get("sections") or []
+        keys = {s.get("key") for s in sections}
+        for k in ("hero", "hero_applications", "hero_materials", "hero_sectors",
+                  "offerings", "technology"):
+            assert k in keys, f"missing section: {k}"
+        hero = next(s for s in sections if s["key"] == "hero")
+        # heading may be customised in prior QA runs, so just check subheading unchanged
+        assert "High-Performance Advanced Polymer Products" in hero.get("subheading", "")
+
+    def test_about_page_sections(self):
+        r = requests.get(f"{API}/pages/about", timeout=10)
+        assert r.status_code == 200
+        keys = {s.get("key") for s in r.json().get("sections") or []}
+        for k in ("overview", "vision", "mission", "philosophy",
+                  "manufacturing", "quality", "future"):
+            assert k in keys, f"missing about section: {k}"
+
+    def test_technology_page(self):
+        r = requests.get(f"{API}/pages/technology", timeout=10)
+        assert r.status_code == 200
+
+    def test_sustainability_page(self):
+        r = requests.get(f"{API}/pages/sustainability", timeout=10)
+        assert r.status_code == 200
+        secs = r.json().get("sections") or []
+        keys = {s.get("key") for s in secs}
+        for k in ("intro", "approach", "focus"):
+            assert k in keys
+        focus = next(s for s in secs if s["key"] == "focus")
+        # Must have 5 bullet lines in body
+        bullets = [b for b in focus.get("body", "").split("\n") if b.strip()]
+        assert len(bullets) == 5, f"expected 5 focus bullets, got {len(bullets)}"
+
+    def test_directors_three_profiles(self):
+        r = requests.get(f"{API}/directors", timeout=10)
+        assert r.status_code == 200
+        items = r.json()
+        assert len(items) == 3
+        names = {d["name"] for d in items}
+        assert "Shubhra Mishra" in names
+        assert "Arun Gopal Mishra" in names
+        assert any("Sudhir Kumar Mishra" in n for n in names)
+        for d in items:
+            assert d.get("designation")
+            assert d.get("photo_url")
+            assert len(d.get("bio", "")) > 50
 
 
 class TestAuditLogs:

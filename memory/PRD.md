@@ -37,8 +37,7 @@ detail template with approved-only specifications; industry landing pages; enqui
 unique reference; WhatsApp CTA; secure server-validated admin with RBAC; SEO foundations;
 WCAG 2.2 AA intent; spam/rate-limit protection; no fabricated company claims.
 
-## Implemented (2026-06-11)
-- **Public site**: Home (hero, about, offerings, categories, featured, industries, technology, why,
+## Implemented (2026-06-11)- **Public site**: Home (hero, about, offerings, categories, featured, industries, technology, why,
   CTA — empty sections hide cleanly), About, Technology, Privacy Policy (CMS-driven), Products
   catalogue with search/category/industry/sort/pagination/empty-reset, category pages, product detail
   (gallery, spec table, variants, documents, related, prefilled quote CTA), Industries list + detail,
@@ -57,8 +56,30 @@ WCAG 2.2 AA intent; spam/rate-limit protection; no fabricated company claims.
   enquiry flow, admin login/pages, mobile menu and responsive checks passed. QA data removed and
   owner defaults restored afterwards.
 
-## Known gaps / owner action required
-- Email notifications NOT configured (health + dashboard report this explicitly).
+## Content revisions (2026-06-12)
+- Home: new H1 "High-Performance Engineered Polymer Components", new subheading/intro, hero blocks
+  APPLICATIONS / MATERIAL PLATFORMS / SECTORS, updated about + offerings ("High-performance Advanced
+  Polymer Products") and technology copy.
+- About: new intro plus Vision, Mission, Business Philosophy, Manufacturing & Engineering Focus;
+  single CTA (Contact Us button removed).
+- New `/sustainability` page (intro, guided approach, 5-point sustainability focus) in nav + footer.
+- Industries: owner-supplied applications overview image.
+- Directors: three published profiles (Shubhra Mishra, Arun Gopal Mishra, Flying Officer Sudhir Kumar
+  Mishra (Retd.)) with generated neutral placeholder avatars.
+- Enquiry form reduced to name, company, email, phone, city, "select who you are" and optional
+  requirement; one shared form rendered inline on /contact + /request-quote and as a popup modal from
+  every Enquire Now / Request a Quote CTA. Admin inbox/CSV now carry city + enquirer type.
+- Technology page rebuilt as a dedicated template (`pages/Technology.jsx`): "Technology &
+  Manufacturing" heading, "Building Integrated Polymer Manufacturing Capabilities" subheading, two
+  equal unit cards with imagery (Unit 1 Advanced Polymer Moulding, Unit 2 Polyurethane Processing &
+  Custom Engineering), Integrated Manufacturing Approach band and the closing statement. Wording uses
+  "being developed" / "under development"; no capacity, machinery or certification claims.
+- All copy lives in `backend/content_defaults.py` and is editable in Admin → Pages & Content;
+  `python backend/apply_content.py` re-seeds the canonical text.
+- Iteration 2 testing: 46/46 backend cases and all frontend flows passed; QA data purged and owner
+  defaults restored afterwards.
+
+## Known gaps / owner action required- Email notifications NOT configured (health + dashboard report this explicitly).
 - File uploads NOT implemented (media by URL).
 - Pending company data: logo, verified email/phone/WhatsApp/address/hours, products, specifications,
   industries, director profiles, final privacy wording, domain.

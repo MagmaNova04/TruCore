@@ -144,7 +144,7 @@ export const Header = () => {
             ))}
             <button
               type="button"
-              onClick={() => openEnquiry({ title: "Enquire Now" })}
+              onClick={() => { setOpen(false); openEnquiry({ title: "Enquire Now" }); }}
               className="tc-btn-primary mt-4 w-full"
               data-testid="mobile-enquire-button"
             >

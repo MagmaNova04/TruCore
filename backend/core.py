@@ -156,9 +156,10 @@ PAGE_DEFS = [
     },
     {
         "slug": "technology", "title": "Technology", "sections": TECHNOLOGY_SECTIONS,
-        "seo_title": "Technology & Engineering Approach | TrueCore Technologies",
-        "seo_description": ("An application-led technology approach combining material science, "
-                            "engineering insight and performance requirements."),
+        "seo_title": "Technology & Manufacturing | TrueCore Technologies",
+        "seo_description": ("Building integrated polymer manufacturing capabilities: precision TPU "
+                            "moulding and cast polyurethane processing for railway, automotive and "
+                            "industrial components."),
     },
     {
         "slug": "sustainability", "title": "Sustainability", "sections": SUSTAINABILITY_SECTIONS,

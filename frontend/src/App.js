@@ -9,6 +9,7 @@ import { EnquiryModalProvider } from "@/components/site/EnquiryModal";
 import AdminLayout from "@/components/admin/AdminLayout";
 import Home from "@/pages/Home";
 import CmsPage from "@/pages/CmsPage";
+import Technology from "@/pages/Technology";
 import Products from "@/pages/Products";
 import ProductDetail from "@/pages/ProductDetail";
 import CategoryDetail from "@/pages/CategoryDetail";
@@ -51,7 +52,7 @@ function App() {
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<CmsPage slug="about" eyebrow="Company" fallbackTitle="About Us" />} />
-              <Route path="/technology" element={<CmsPage slug="technology" eyebrow="Engineering" fallbackTitle="Technology" />} />
+              <Route path="/technology" element={<Technology />} />
               <Route path="/sustainability" element={<CmsPage slug="sustainability" eyebrow="Responsible Growth" fallbackTitle="Sustainability" />} />
               <Route path="/privacy-policy" element={<CmsPage slug="privacy-policy" eyebrow="Legal" fallbackTitle="Privacy Policy" />} />
               <Route path="/products" element={<Products />} />
