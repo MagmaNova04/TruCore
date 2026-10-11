@@ -159,16 +159,13 @@ DIRECTORS = [
     {
         "name": "Shubhra Mishra",
         "designation": "Chief Executive Officer & Director – Strategy, Sustainability & Innovation",
-        "bio": ("Shubhra Mishra leads TrueCore Technologies as its Chief Executive Officer & Director, "
-                "shaping the company's strategic direction and its growth as a women-led engineering "
-                "and advanced materials enterprise.\n\nHer doctoral research at IIT Jodhpur focuses on "
-                "sustainability, governance and strategic foresight, with emphasis on translating "
-                "long-term sustainability goals into practical business and technological actions. At "
-                "TrueCore, she leads corporate strategy, organisational development, sustainability "
-                "integration, research collaboration and technology foresight across railway, "
-                "automotive and industrial applications.\n\nFocus Areas: Corporate Strategy, Women-Led "
-                "Enterprise Development, Sustainability, Innovation, Technology Foresight, Research "
-                "Collaboration and Governance."),
+        "bio": ("Shubhra Mishra leads TrueCore Technologies with a research-led and future-focused "
+                "approach to advanced materials and responsible manufacturing. Her doctoral research "
+                "at IIT Jodhpur focuses on sustainability, governance and strategic foresight, with "
+                "emphasis on translating long-term sustainability goals into practical business and "
+                "technological actions.\n\nAt TrueCore, she leads corporate strategy, sustainability "
+                "integration, technology foresight, research collaboration and organisational "
+                "development across railway, automotive and industrial applications."),
         "photo_url": AVATAR_FEMALE,
         "sort_order": 1,
     },
