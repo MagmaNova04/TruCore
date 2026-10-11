@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2, AlertCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -14,9 +14,9 @@ export default function AdminLogin() {
 
   usePageMeta({ title: "Staff Login | TrueCore Technologies", noindex: true });
 
-  if (admin) {
-    navigate("/admin", { replace: true });
-  }
+  useEffect(() => {
+    if (admin) navigate("/admin", { replace: true });
+  }, [admin, navigate]);
 
   const submit = async (e) => {
     e.preventDefault();

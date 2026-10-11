@@ -231,7 +231,8 @@ async def update_product(product_id: str, payload: ProductIn, admin: dict = Depe
     if not doc:
         raise HTTPException(status_code=404, detail="Product not found")
     data = payload.model_dump()
-    data["slug"] = await _unique_slug(db.products, payload.slug or payload.name, exclude_id=product_id)
+    data["slug"] = await _unique_slug(
+        db.products, payload.slug or doc.get("slug") or payload.name, exclude_id=product_id)
     data["updated_at"] = now_iso()
     await db.products.update_one({"_id": product_id}, {"$set": data})
     await log_audit(admin, "update", "product", product_id, payload.name)
@@ -270,10 +271,12 @@ async def create_category(payload: CategoryIn, admin: dict = Depends(require_con
 @admin_router.patch("/categories/{category_id}")
 async def update_category(category_id: str, payload: CategoryIn, admin: dict = Depends(require_content)):
     _check_status(payload.status)
-    if not await db.categories.find_one({"_id": category_id}):
+    existing = await db.categories.find_one({"_id": category_id})
+    if not existing:
         raise HTTPException(status_code=404, detail="Category not found")
     data = payload.model_dump()
-    data["slug"] = await _unique_slug(db.categories, payload.slug or payload.name, exclude_id=category_id)
+    data["slug"] = await _unique_slug(
+        db.categories, payload.slug or existing.get("slug") or payload.name, exclude_id=category_id)
     data["updated_at"] = now_iso()
     await db.categories.update_one({"_id": category_id}, {"$set": data})
     await log_audit(admin, "update", "category", category_id, payload.name)
@@ -312,10 +315,12 @@ async def create_industry(payload: IndustryIn, admin: dict = Depends(require_con
 @admin_router.patch("/industries/{industry_id}")
 async def update_industry(industry_id: str, payload: IndustryIn, admin: dict = Depends(require_content)):
     _check_status(payload.status)
-    if not await db.industries.find_one({"_id": industry_id}):
+    existing = await db.industries.find_one({"_id": industry_id})
+    if not existing:
         raise HTTPException(status_code=404, detail="Industry not found")
     data = payload.model_dump()
-    data["slug"] = await _unique_slug(db.industries, payload.slug or payload.name, exclude_id=industry_id)
+    data["slug"] = await _unique_slug(
+        db.industries, payload.slug or existing.get("slug") or payload.name, exclude_id=industry_id)
     data["updated_at"] = now_iso()
     await db.industries.update_one({"_id": industry_id}, {"$set": data})
     await log_audit(admin, "update", "industry", industry_id, payload.name)
@@ -474,8 +479,6 @@ async def list_enquiries(q: str | None = None, status: str | None = None, priori
 
 @admin_router.get("/enquiries/export")
 async def export_enquiries(admin: dict = Depends(require_enquiry)):
-    if admin["role"] not in ("super_admin", "enquiry_manager"):
-        raise HTTPException(status_code=403, detail="Not permitted")
     docs = await db.enquiries.find({}).sort("created_at", -1).to_list(5000)
     buffer = io.StringIO()
     fields = ["reference_number", "created_at", "status", "priority", "name", "company_name",

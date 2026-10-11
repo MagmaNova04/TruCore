@@ -194,7 +194,7 @@ async def create_enquiry(payload: EnquiryCreate, request: Request):
     ip = client_ip(request)
     if not rate_limiter.allow(f"enquiry:{ip}", limit=5, window=600):
         raise HTTPException(status_code=429, detail="Too many submissions. Please try again later.")
-    if payload.company_website:
+    if (payload.company_website or "").strip():
         raise HTTPException(status_code=400, detail="Submission rejected")
 
     email = payload.email.lower()

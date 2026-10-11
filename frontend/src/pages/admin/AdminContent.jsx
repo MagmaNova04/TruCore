@@ -52,7 +52,7 @@ export default function AdminContent() {
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <select value={slug} onChange={(e) => setSlug(e.target.value)} className="tc-input max-w-xs" data-testid="content-page-select">
-          {pages.map((p) => <option key={p.slug} value={p.slug}>{p.title} ({p.slug})</option>)}
+          {pages.map((p) => <option key={p.slug} value={p.slug} label={`${p.title} (${p.slug})`} />)}
         </select>
         {draft && <StatusBadge value={draft.status} />}
         {draft && (
