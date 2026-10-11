@@ -118,7 +118,10 @@ DEFAULT_SETTINGS = {
     "positioning": "Manufacturers of High-Performance PU Products",
     "logo_url": "",
     "contact_email": "",
+    "alternate_email": "",
     "contact_phone": "",
+    "alternate_phone": "",
+    "cin": "",
     "whatsapp_number": "",
     "whatsapp_message": (
         "Hello TrueCore Technologies, I would like to enquire about your PU products and "

@@ -79,6 +79,16 @@ WCAG 2.2 AA intent; spam/rate-limit protection; no fabricated company claims.
   defaults restored afterwards.
 
 ## Known gaps / owner action required
+- Contact (2026-06-12): verified details published — primary email enquiry@truecoretec.com, alternate
+  truecoretec@gmail.com, phones +91 63948 12646 / +91 76199 32431, CIN U20131UP2026PTC251661 and the
+  Lucknow registered-office address (stored in site_settings; new fields `alternate_email`,
+  `alternate_phone`, `cin`). Page adds the Registered Office card, Unit 1 (G-37) and Unit 2 (G-38)
+  Sandila cards with exact coordinates + "View on Google Maps" links (new tab, noopener noreferrer),
+  and an "Our Locations" tabbed embedded map (default Lucknow) with a dynamic "Open in Google Maps"
+  link. Enquiry form untouched.
+- Navigation renamed: About Us, Industries We Cater, Technology & Manufacturing, Leadership & Team,
+  Contact Us. Desktop nav switches to the menu button below 1280px to fit the longer labels.
+  Footer now also carries both emails, both phones, the registered office and CIN.
 - Directors (2026-06-12): compact 3-up cards (118px circular portraits, short intro, View Profile)
   with an on-page profile modal (720px desktop / ~94% mobile, X + outside-click + ESC close, body
   scroll lock), an "Our Team" row of four functional capability cards and the closing line "One Team.

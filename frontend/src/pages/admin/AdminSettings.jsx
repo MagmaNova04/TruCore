@@ -50,7 +50,10 @@ export default function AdminSettings() {
           <legend className="tc-eyebrow px-1">Contact</legend>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Contact email"><input type="email" value={form.contact_email || ""} onChange={(e) => set("contact_email", e.target.value)} className="tc-input" data-testid="settings-contact-email" /></Field>
+            <Field label="Alternate email"><input type="email" value={form.alternate_email || ""} onChange={(e) => set("alternate_email", e.target.value)} className="tc-input" data-testid="settings-alternate-email" /></Field>
             <Field label="Contact phone"><input value={form.contact_phone || ""} onChange={(e) => set("contact_phone", e.target.value)} className="tc-input" data-testid="settings-contact-phone" /></Field>
+            <Field label="Alternate phone"><input value={form.alternate_phone || ""} onChange={(e) => set("alternate_phone", e.target.value)} className="tc-input" data-testid="settings-alternate-phone" /></Field>
+            <Field label="CIN"><input value={form.cin || ""} onChange={(e) => set("cin", e.target.value)} className="tc-input" data-testid="settings-cin" /></Field>
             <Field label="WhatsApp number" hint="International format, digits only e.g. 919876543210">
               <input value={form.whatsapp_number || ""} onChange={(e) => set("whatsapp_number", e.target.value)} className="tc-input" data-testid="settings-whatsapp-number" />
             </Field>

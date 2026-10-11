@@ -7,14 +7,14 @@ import { useSite } from "@/context/SiteContext";
 import { useEnquiryModal } from "@/components/site/EnquiryModal";
 
 const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/products", label: "Products" },
-  { to: "/industries", label: "Industries" },
-  { to: "/technology", label: "Technology" },
-  { to: "/sustainability", label: "Sustainability" },
-  { to: "/directors", label: "Directors" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", label: "Home", id: "home" },
+  { to: "/about", label: "About Us", id: "about" },
+  { to: "/products", label: "Products", id: "products" },
+  { to: "/industries", label: "Industries We Cater", id: "industries" },
+  { to: "/technology", label: "Technology & Manufacturing", id: "technology" },
+  { to: "/sustainability", label: "Sustainability", id: "sustainability" },
+  { to: "/directors", label: "Leadership & Team", id: "directors" },
+  { to: "/contact", label: "Contact Us", id: "contact" },
 ];
 
 const fetcher = (url) => api.get(url).then((r) => r.data);
@@ -33,7 +33,7 @@ export const Header = () => {
   }, [pathname]);
 
   const linkClass = ({ isActive }) =>
-    `relative py-2 text-[13px] font-medium transition-colors xl:text-[14px] ${
+    `relative whitespace-nowrap py-2 text-[12.5px] font-medium transition-colors 2xl:text-[13.5px] ${
       isActive ? "text-[#10A6D8]" : "text-[#3F434A] hover:text-[#10A6D8]"
     }`;
 
@@ -59,7 +59,7 @@ export const Header = () => {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-4 lg:flex xl:gap-6" aria-label="Primary">
+        <nav className="hidden items-center gap-3.5 xl:flex 2xl:gap-5" aria-label="Primary">
           {NAV.map((item) =>
             item.to === "/products" && categories?.length ? (
               <div
@@ -97,7 +97,7 @@ export const Header = () => {
                 key={item.to}
                 to={item.to}
                 className={linkClass}
-                data-testid={`nav-${item.label.toLowerCase()}-link`}
+                data-testid={`nav-${item.id}-link`}
               >
                 {item.label}
               </NavLink>
@@ -106,7 +106,7 @@ export const Header = () => {
           <button
             type="button"
             onClick={() => openEnquiry({ title: "Enquire Now" })}
-            className="tc-btn-primary !py-2.5 !text-[12px]"
+            className="tc-btn-primary !whitespace-nowrap !py-2.5 !text-[12px]"
             data-testid="header-enquire-button"
           >
             Enquire Now
@@ -116,7 +116,7 @@ export const Header = () => {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex h-10 w-10 items-center justify-center border border-[#8A8F96]/40 text-[#003B7A] lg:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center border border-[#8A8F96]/40 text-[#003B7A] xl:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           data-testid="mobile-menu-toggle"
@@ -127,7 +127,7 @@ export const Header = () => {
 
       {open && (
         <nav
-          className="border-t border-[#8A8F96]/25 bg-white lg:hidden"
+          className="border-t border-[#8A8F96]/25 bg-white xl:hidden"
           aria-label="Mobile"
           data-testid="mobile-nav"
         >
@@ -137,7 +137,7 @@ export const Header = () => {
                 key={item.to}
                 to={item.to}
                 className="border-b border-[#EDEDED] py-3 text-[15px] font-medium text-[#3F434A]"
-                data-testid={`mobile-nav-${item.label.toLowerCase()}`}
+                data-testid={`mobile-nav-${item.id}`}
               >
                 {item.label}
               </NavLink>

@@ -30,8 +30,17 @@ async def main():
                                            "status": PUBLISHED, "created_at": now_iso()})
             print("inserted director:", director["name"])
 
-    await db.site_settings.update_one({"_id": "site"}, {"$set": {"industries_hero_url": INDUSTRIES_HERO}})
-    print("industries hero image set")
+    await db.site_settings.update_one({"_id": "site"}, {"$set": {
+        "industries_hero_url": INDUSTRIES_HERO,
+        "contact_email": "enquiry@truecoretec.com",
+        "alternate_email": "truecoretec@gmail.com",
+        "contact_phone": "+91 63948 12646",
+        "alternate_phone": "+91 76199 32431",
+        "cin": "U20131UP2026PTC251661",
+        "address": ("Kh-1245, Yas Puram, Raj Estate Marriage Lawn, Rajajipuram, "
+                    "Lucknow – 226017, Uttar Pradesh, India"),
+    }})
+    print("verified contact details applied")
 
 
 if __name__ == "__main__":
