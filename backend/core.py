@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from content_defaults import (HOME_SECTIONS, ABOUT_SECTIONS, TECHNOLOGY_SECTIONS,
-                              SUSTAINABILITY_SECTIONS, DIRECTORS)
+                              SUSTAINABILITY_SECTIONS, INDUSTRIES_SECTIONS, DIRECTORS)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
@@ -160,6 +160,12 @@ PAGE_DEFS = [
         "seo_description": ("Building integrated polymer manufacturing capabilities: precision TPU "
                             "moulding and cast polyurethane processing for railway, automotive and "
                             "industrial components."),
+    },
+    {
+        "slug": "industries", "title": "Industries We Cater", "sections": INDUSTRIES_SECTIONS,
+        "seo_title": "Industries We Cater | TrueCore Technologies Pvt. Ltd.",
+        "seo_description": ("Engineered polyurethane, TPU and advanced polymer solutions for railway, "
+                            "automotive and EV, industrial, metro and custom engineering applications."),
     },
     {
         "slug": "sustainability", "title": "Sustainability", "sections": SUSTAINABILITY_SECTIONS,

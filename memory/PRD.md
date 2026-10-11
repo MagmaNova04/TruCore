@@ -63,8 +63,7 @@ WCAG 2.2 AA intent; spam/rate-limit protection; no fabricated company claims.
 - About: new intro plus Vision, Mission, Business Philosophy, Manufacturing & Engineering Focus;
   single CTA (Contact Us button removed).
 - New `/sustainability` page (intro, guided approach, 5-point sustainability focus) in nav + footer.
-- Industries: owner-supplied applications overview image.
-- Directors: three published profiles (Shubhra Mishra, Arun Gopal Mishra, Flying Officer Sudhir Kumar
+- Industries: owner-supplied applications overview image.- Directors: three published profiles (Shubhra Mishra, Arun Gopal Mishra, Flying Officer Sudhir Kumar
   Mishra (Retd.)) with generated neutral placeholder avatars.
 - Enquiry form reduced to name, company, email, phone, city, "select who you are" and optional
   requirement; one shared form rendered inline on /contact + /request-quote and as a popup modal from
@@ -79,7 +78,12 @@ WCAG 2.2 AA intent; spam/rate-limit protection; no fabricated company claims.
 - Iteration 2 testing: 46/46 backend cases and all frontend flows passed; QA data purged and owner
   defaults restored afterwards.
 
-## Known gaps / owner action required- Email notifications NOT configured (health + dashboard report this explicitly).
+## Known gaps / owner action required
+- `/industries` rebuilt as "Industries We Cater" (2026-06-12): split heading/intro hero, five equal
+  industry cards with overlapping circular icons (Railways, Automotive & EV, Industrial, Mobility &
+  Metro, Custom Engineering), five alternating detail sections with bullet capability lists, the
+  custom-engineering process flow and a dark-blue cross-industry closing band with Explore Products /
+  Request a Technical Discussion CTAs. Content lives in page_content slug `industries`.- Email notifications NOT configured (health + dashboard report this explicitly).
 - File uploads NOT implemented (media by URL).
 - Pending company data: logo, verified email/phone/WhatsApp/address/hours, products, specifications,
   industries, director profiles, final privacy wording, domain.

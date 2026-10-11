@@ -155,8 +155,124 @@ SUSTAINABILITY_SECTIONS = [
      "image_url": ""},
 ]
 
-DIRECTORS = [
-    {
+IND_IMG = {
+    "railways": "https://images.unsplash.com/photo-1580442374555-3def8fb41738?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
+    "automotive": "https://images.unsplash.com/photo-1764869427601-eb699ac80a0c?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
+    "industrial": "https://images.unsplash.com/photo-1701328778019-e95dedbf5346?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
+    "mobility": "https://images.unsplash.com/photo-1503776470087-3569342b4a2e?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
+    "custom": UNIT_2_IMAGE,
+}
+
+INDUSTRIES_SECTIONS = [
+    {"key": "intro", "heading": "Engineered Polymer Solutions Across Critical Industries",
+     "subheading": "Industries We Cater",
+     "body": ("TrueCore Technologies develops high-performance polyurethane, TPU and engineered "
+              "polymer solutions for applications where durability, resilience, wear resistance and "
+              "consistent performance are critical. Our approach combines material understanding, "
+              "application requirements and product engineering to address the needs of railway, "
+              "automotive, mobility and industrial sectors."),
+     "image_url": ""},
+
+    {"key": "card_railways", "heading": "Railways", "subheading": "train",
+     "body": ("Engineered polymer solutions for rolling stock, locomotives, coaches, wagons and "
+              "railway infrastructure applications."),
+     "image_url": IND_IMG["railways"]},
+    {"key": "card_automotive", "heading": "Automotive & EV", "subheading": "car",
+     "body": ("High-performance polymer components for conventional vehicles, commercial mobility and "
+              "emerging electric vehicle platforms."),
+     "image_url": IND_IMG["automotive"]},
+    {"key": "card_industrial", "heading": "Industrial", "subheading": "factory",
+     "body": ("Wear-resistant, impact-resistant and application-specific polymer components for "
+              "demanding industrial equipment and processes."),
+     "image_url": IND_IMG["industrial"]},
+    {"key": "card_mobility", "heading": "Mobility & Metro", "subheading": "metro",
+     "body": ("Engineered polymer solutions for metro systems, urban mobility, transport "
+              "infrastructure and next-generation transit applications."),
+     "image_url": IND_IMG["mobility"]},
+    {"key": "card_custom", "heading": "Custom Engineering", "subheading": "gear",
+     "body": ("Application-specific polyurethane and engineered polymer components developed around "
+              "customer drawings, operating conditions and performance requirements."),
+     "image_url": IND_IMG["custom"]},
+
+    {"key": "solutions_intro", "heading": "Solutions Designed Around Industry Requirements",
+     "subheading": "",
+     "body": ("Different industries place very different demands on polymer components. TrueCore's "
+              "approach begins with understanding the application, operating environment, loading "
+              "conditions and expected performance before identifying the appropriate material and "
+              "manufacturing route."),
+     "image_url": ""},
+
+    {"key": "detail_railways", "heading": "Engineered for Railway Applications", "subheading": "Railways",
+     "body": ("TrueCore is developing polyurethane, TPU and engineered polymer solutions for "
+              "applications across the railway ecosystem where repeated loading, vibration, impact, "
+              "wear and long service life are important considerations.\n\n"
+              "The company's railway focus extends across:\n"
+              "- Locomotives\n- Passenger coaches\n- LHB coaches\n- Modern trainsets\n- Wagons\n"
+              "- EMU / MEMU systems\n- Metro rolling stock\n- Railway maintenance and associated equipment\n\n"
+              "Potential polymer applications include suspension-related components, pads, bushes, "
+              "vibration-management products, wear components and other parts manufactured against "
+              "applicable drawings and technical specifications. Products are under development or "
+              "qualification against applicable customer and railway requirements."),
+     "image_url": IND_IMG["railways"]},
+
+    {"key": "detail_automotive", "heading": "Performance Materials for Evolving Mobility",
+     "subheading": "Automotive & EV",
+     "body": ("Automotive and electric mobility platforms increasingly require components that combine "
+              "low weight, resilience, durability and consistent performance.\n\n"
+              "Our engineered polymer capabilities are intended for applications across:\n"
+              "- Passenger vehicles\n- Commercial vehicles\n- Two-wheelers\n- Electric vehicles\n"
+              "- Specialised mobility platforms\n- Automotive sub-systems\n\n"
+              "Potential applications include bushes, pads, vibration-management parts, "
+              "impact-resistant components, protective components, seals, precision moulded TPU parts "
+              "and customer-specific polyurethane products. Our approach is based on matching material "
+              "performance with the actual operating environment of the component."),
+     "image_url": IND_IMG["automotive"]},
+
+    {"key": "detail_industrial", "heading": "Built for Demanding Industrial Environments",
+     "subheading": "Industrial",
+     "body": ("Industrial machinery often operates under abrasion, repetitive loading, impact, "
+              "vibration and exposure to oils, dust or process materials. Polyurethane and TPU can "
+              "provide valuable performance advantages in many such applications.\n\n"
+              "We address requirements across areas such as:\n"
+              "- Material handling\n- Manufacturing equipment\n- Cement and mineral processing\n"
+              "- Sugar and process industries\n- Paper and packaging\n- General engineering\n"
+              "- Conveyor and movement systems\n- Machine components\n\n"
+              "Potential solutions include polyurethane rollers, wheels, bushes, pads, liners, "
+              "scrapers, wear components, impact-resistant parts and customised polymer components."),
+     "image_url": IND_IMG["industrial"]},
+
+    {"key": "detail_mobility", "heading": "Supporting Modern Urban Mobility",
+     "subheading": "Mobility & Metro",
+     "body": ("Modern metro and urban transport systems require components engineered for reliability, "
+              "passenger comfort, vibration management and extended service life.\n\n"
+              "Our polymer engineering approach can support applications within:\n"
+              "- Metro rolling stock\n- Urban rail systems\n- Rapid transit\n- Mobility infrastructure\n"
+              "- Specialised transport equipment\n\n"
+              "Relevant applications may include vibration-management products, pads, bushes, "
+              "protective components, wear-resistant parts and other customised polymer solutions "
+              "developed according to technical requirements."),
+     "image_url": IND_IMG["mobility"]},
+
+    {"key": "detail_custom", "heading": "From Requirement to Engineered Solution",
+     "subheading": "Custom Engineering",
+     "body": ("Not every application can be addressed through a standard catalogue product. TrueCore "
+              "works towards developing customised polyurethane, TPU and engineered polymer components "
+              "based on customer drawings, application conditions and required product performance.\n\n"
+              "Custom development may address:\n"
+              "- Unusual dimensions\n- Specialised hardness requirements\n- Wear conditions\n"
+              "- Vibration\n- Impact loading\n- Repeated mechanical loading\n"
+              "- Replacement of conventional materials\n- Specialised OEM requirements"),
+     "image_url": IND_IMG["custom"]},
+
+    {"key": "cross", "heading": "One Material Platform. Multiple Industries.",
+     "subheading": "Railways | Automotive | EV | Metro | Industrial | Custom Engineering",
+     "body": ("From railway rolling stock and electric mobility to industrial machinery and customised "
+              "engineering applications, TrueCore's objective is to apply advanced polymer technology "
+              "where material performance can create measurable value."),
+     "image_url": ""},
+]
+
+DIRECTORS = [    {
         "name": "Shubhra Mishra",
         "designation": "Chief Executive Officer & Director – Strategy, Sustainability & Innovation",
         "bio": ("Shubhra Mishra leads TrueCore Technologies with a research-led and future-focused "
