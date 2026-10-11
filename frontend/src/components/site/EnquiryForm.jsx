@@ -1,42 +1,37 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import useSWR from "swr";
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { api, apiError } from "@/lib/api";
 import { track } from "@/lib/analytics";
-
-const fetcher = (url) => api.get(url).then((r) => r.data);
 
 const EMPTY = {
   name: "",
   company_name: "",
   email: "",
   phone: "",
-  industry_slug: "",
-  product_slug: "",
-  category_slug: "",
-  quantity: "",
-  quantity_unit: "",
+  city: "",
+  enquirer_type: "",
   requirement: "",
-  expected_timeline: "",
-  notes: "",
   company_website: "",
 };
 
-export const EnquiryForm = ({ sourcePage, initialProduct = "", initialIndustry = "", compact = false }) => {
-  const [form, setForm] = useState({ ...EMPTY, product_slug: initialProduct, industry_slug: initialIndustry });
+export const ENQUIRER_TYPES = [
+  ["customer", "Customer"],
+  ["investor_analyst", "Investor or analyst"],
+  ["vendor", "Vendor"],
+  ["job_seeker", "Job seeker"],
+];
+
+export const EnquiryForm = ({ sourcePage, productSlug = "", industrySlug = "", onSuccess }) => {
+  const [form, setForm] = useState(EMPTY);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
   const [reference, setReference] = useState("");
   const started = useRef(false);
 
-  const { data: products } = useSWR("/products?page_size=48", fetcher, { revalidateOnFocus: false });
-  const { data: industries } = useSWR("/industries", fetcher, { revalidateOnFocus: false });
-  const { data: categories } = useSWR("/categories", fetcher, { revalidateOnFocus: false });
-
   useEffect(() => {
-    setForm((f) => ({ ...f, product_slug: initialProduct || f.product_slug, industry_slug: initialIndustry || f.industry_slug }));
-  }, [initialProduct, initialIndustry]);
+    started.current = false;
+  }, [sourcePage]);
 
   const set = (key) => (e) => {
     if (!started.current) {
@@ -50,24 +45,24 @@ export const EnquiryForm = ({ sourcePage, initialProduct = "", initialIndustry =
     e.preventDefault();
     setStatus("loading");
     setError("");
-    const payload = {
-      ...form,
-      quantity: form.quantity ? Number(form.quantity) : null,
-      source_page: sourcePage,
-    };
-    Object.keys(payload).forEach((k) => {
-      if (payload[k] === "") payload[k] = null;
-    });
-    payload.name = form.name;
-    payload.company_name = form.company_name;
-    payload.email = form.email;
-    payload.phone = form.phone;
-    payload.requirement = form.requirement;
     try {
-      const { data } = await api.post("/enquiries", payload);
+      const { data } = await api.post("/enquiries", {
+        name: form.name,
+        company_name: form.company_name,
+        email: form.email,
+        phone: form.phone,
+        city: form.city,
+        enquirer_type: form.enquirer_type,
+        requirement: form.requirement || null,
+        product_slug: productSlug || null,
+        industry_slug: industrySlug || null,
+        source_page: sourcePage,
+        company_website: form.company_website,
+      });
       setReference(data.reference_number);
       setStatus("success");
       track("enquiry_submit_success", { source_page: sourcePage });
+      onSuccess?.(data.reference_number);
     } catch (err) {
       setError(apiError(err, "We could not submit your enquiry. Please try again."));
       setStatus("error");
@@ -86,20 +81,14 @@ export const EnquiryForm = ({ sourcePage, initialProduct = "", initialIndustry =
         <p className="tc-mono mt-4 text-[15px] text-[#003B7A]" data-testid="enquiry-reference">
           Reference: {reference}
         </p>
-        <div className="mt-6 flex flex-wrap gap-4">
-          <Link to="/products" className="tc-btn-outline">Browse Products</Link>
-          <button
-            type="button"
-            className="tc-btn-ghost text-[13px]"
-            onClick={() => {
-              setForm({ ...EMPTY });
-              setStatus("idle");
-            }}
-            data-testid="enquiry-new-submission"
-          >
-            Submit another enquiry
-          </button>
-        </div>
+        <button
+          type="button"
+          className="tc-btn-ghost mt-6 text-[13px]"
+          onClick={() => { setForm(EMPTY); setStatus("idle"); }}
+          data-testid="enquiry-new-submission"
+        >
+          Submit another enquiry
+        </button>
       </div>
     );
   }
@@ -113,7 +102,7 @@ export const EnquiryForm = ({ sourcePage, initialProduct = "", initialIndustry =
         </div>
       )}
 
-      <div className={`grid gap-5 ${compact ? "" : "sm:grid-cols-2"}`}>
+      <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="eq-name" className="tc-label">Full name *</label>
           <input id="eq-name" required minLength={2} maxLength={120} value={form.name} onChange={set("name")}
@@ -125,7 +114,7 @@ export const EnquiryForm = ({ sourcePage, initialProduct = "", initialIndustry =
             className="tc-input" autoComplete="organization" data-testid="enquiry-company-input" />
         </div>
         <div>
-          <label htmlFor="eq-email" className="tc-label">Business email *</label>
+          <label htmlFor="eq-email" className="tc-label">Email *</label>
           <input id="eq-email" type="email" required maxLength={254} value={form.email} onChange={set("email")}
             className="tc-input" autoComplete="email" data-testid="enquiry-email-input" />
         </div>
@@ -135,52 +124,26 @@ export const EnquiryForm = ({ sourcePage, initialProduct = "", initialIndustry =
             className="tc-input" placeholder="+91 98765 43210" autoComplete="tel" data-testid="enquiry-phone-input" />
         </div>
         <div>
-          <label htmlFor="eq-industry" className="tc-label">Industry</label>
-          <select id="eq-industry" value={form.industry_slug} onChange={set("industry_slug")} className="tc-input" data-testid="enquiry-industry-select">
-            <option value="">Select industry</option>
-            {(industries || []).map((i) => <option key={i.id} value={i.slug}>{i.name}</option>)}
-          </select>
+          <label htmlFor="eq-city" className="tc-label">City name *</label>
+          <input id="eq-city" required minLength={2} maxLength={120} value={form.city} onChange={set("city")}
+            className="tc-input" autoComplete="address-level2" data-testid="enquiry-city-input" />
         </div>
         <div>
-          <label htmlFor="eq-product" className="tc-label">Product of interest</label>
-          <select id="eq-product" value={form.product_slug} onChange={set("product_slug")} className="tc-input" data-testid="enquiry-product-select">
-            <option value="">Select product</option>
-            {(products?.items || []).map((p) => <option key={p.id} value={p.slug}>{p.name}</option>)}
+          <label htmlFor="eq-type" className="tc-label">Select who you are *</label>
+          <select id="eq-type" required value={form.enquirer_type} onChange={set("enquirer_type")}
+            className="tc-input" data-testid="enquiry-type-select">
+            <option value="">Select an option</option>
+            {ENQUIRER_TYPES.map(([value, label]) => (
+              <option key={value} value={value} label={label} />
+            ))}
           </select>
         </div>
-        <div>
-          <label htmlFor="eq-category" className="tc-label">Product category</label>
-          <select id="eq-category" value={form.category_slug} onChange={set("category_slug")} className="tc-input" data-testid="enquiry-category-select">
-            <option value="">Select category</option>
-            {(categories || []).map((c) => <option key={c.id} value={c.slug}>{c.name}</option>)}
-          </select>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label htmlFor="eq-qty" className="tc-label">Quantity</label>
-            <input id="eq-qty" type="number" min={1} value={form.quantity} onChange={set("quantity")} className="tc-input" data-testid="enquiry-quantity-input" />
-          </div>
-          <div>
-            <label htmlFor="eq-unit" className="tc-label">Unit</label>
-            <input id="eq-unit" maxLength={40} value={form.quantity_unit} onChange={set("quantity_unit")} className="tc-input" placeholder="pieces" data-testid="enquiry-unit-input" />
-          </div>
-        </div>
-        <div className={compact ? "" : "sm:col-span-2"}>
-          <label htmlFor="eq-requirement" className="tc-label">Application or technical requirement *</label>
-          <textarea id="eq-requirement" required minLength={10} maxLength={5000} rows={5} value={form.requirement}
+        <div className="sm:col-span-2">
+          <label htmlFor="eq-requirement" className="tc-label">Application or technical requirement (optional)</label>
+          <textarea id="eq-requirement" maxLength={5000} rows={4} value={form.requirement}
             onChange={set("requirement")} className="tc-input"
             placeholder="Describe the application, operating conditions, loads, dimensions or drawing reference."
             data-testid="enquiry-requirement-input" />
-          <p className="mt-1 text-[12px] text-[#8A8F96]">{form.requirement.length}/5000 characters (minimum 10)</p>
-        </div>
-        <div>
-          <label htmlFor="eq-timeline" className="tc-label">Expected timeline</label>
-          <input id="eq-timeline" maxLength={120} value={form.expected_timeline} onChange={set("expected_timeline")}
-            className="tc-input" placeholder="e.g. within 6 weeks" data-testid="enquiry-timeline-input" />
-        </div>
-        <div>
-          <label htmlFor="eq-notes" className="tc-label">Additional notes</label>
-          <input id="eq-notes" maxLength={2000} value={form.notes} onChange={set("notes")} className="tc-input" data-testid="enquiry-notes-input" />
         </div>
       </div>
 

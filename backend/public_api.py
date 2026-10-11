@@ -4,7 +4,7 @@ from fastapi.responses import Response as RawResponse
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
 from core import (db, new_id, now_iso, serialize, serialize_many, rate_limiter, client_ip,
-                  PUBLISHED, DEFAULT_SETTINGS)
+                  PUBLISHED, DEFAULT_SETTINGS, ENQUIRER_TYPES)
 import os
 
 public_router = APIRouter(prefix="/api", tags=["public"])
@@ -17,14 +17,12 @@ class EnquiryCreate(BaseModel):
     company_name: str = Field(min_length=2, max_length=180)
     email: EmailStr
     phone: str = Field(min_length=7, max_length=20)
+    city: str = Field(min_length=2, max_length=120)
+    enquirer_type: str
+    requirement: str | None = Field(default=None, max_length=5000)
     industry_slug: str | None = None
     product_slug: str | None = None
     category_slug: str | None = None
-    quantity: int | None = Field(default=None, ge=1, le=100_000_000)
-    quantity_unit: str | None = Field(default=None, max_length=40)
-    requirement: str = Field(min_length=10, max_length=5000)
-    expected_timeline: str | None = Field(default=None, max_length=120)
-    notes: str | None = Field(default=None, max_length=2000)
     source_page: str | None = Field(default=None, max_length=200)
     company_website: str | None = None  # honeypot
 
@@ -34,6 +32,13 @@ class EnquiryCreate(BaseModel):
         if not PHONE_RE.match(v.strip()):
             raise ValueError("Enter a valid phone number")
         return v.strip()
+
+    @field_validator("enquirer_type")
+    @classmethod
+    def check_type(cls, v: str) -> str:
+        if v not in ENQUIRER_TYPES:
+            raise ValueError("Select who you are from the available options")
+        return v
 
     @field_validator("source_page")
     @classmethod
@@ -198,9 +203,11 @@ async def create_enquiry(payload: EnquiryCreate, request: Request):
         raise HTTPException(status_code=400, detail="Submission rejected")
 
     email = payload.email.lower()
+    requirement = (payload.requirement or "").strip()
     duplicate = await db.enquiries.find_one({
         "email": email,
-        "requirement": payload.requirement.strip(),
+        "requirement": requirement or None,
+        "city": payload.city.strip(),
         "created_at": {"$gte": (await _recent_cutoff())},
     })
     if duplicate:
@@ -221,17 +228,15 @@ async def create_enquiry(payload: EnquiryCreate, request: Request):
         "company_name": payload.company_name.strip(),
         "email": email,
         "phone": payload.phone,
+        "city": payload.city.strip(),
+        "enquirer_type": payload.enquirer_type,
         "industry_id": industry["_id"] if industry else None,
         "industry_name": industry["name"] if industry else None,
         "product_id": product["_id"] if product else None,
         "product_name": product["name"] if product else None,
         "product_slug": product["slug"] if product else None,
         "product_category_id": (category or {}).get("_id") or (product or {}).get("category_id"),
-        "quantity": payload.quantity,
-        "quantity_unit": (payload.quantity_unit or "").strip() or None,
-        "requirement": payload.requirement.strip(),
-        "expected_timeline": (payload.expected_timeline or "").strip() or None,
-        "notes": (payload.notes or "").strip() or None,
+        "requirement": requirement or None,
         "source_page": payload.source_page,
         "status": "new",
         "priority": "normal",
@@ -256,8 +261,8 @@ async def _recent_cutoff() -> str:
 @public_router.get("/sitemap.xml")
 async def sitemap():
     base = os.environ.get("PUBLIC_SITE_URL", "").rstrip("/")
-    urls = ["/", "/about", "/products", "/industries", "/technology", "/directors",
-            "/contact", "/request-quote", "/privacy-policy"]
+    urls = ["/", "/about", "/products", "/industries", "/technology", "/sustainability",
+            "/directors", "/contact", "/request-quote", "/privacy-policy"]
     products = await db.products.find({"status": PUBLISHED}, {"slug": 1}).to_list(1000)
     categories = await db.categories.find({"status": PUBLISHED}, {"slug": 1}).to_list(500)
     industries = await db.industries.find({"status": PUBLISHED}, {"slug": 1}).to_list(500)

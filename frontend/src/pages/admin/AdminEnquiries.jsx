@@ -83,7 +83,7 @@ export default function AdminEnquiries() {
 
       <DataTable
         testId="admin-enquiries-table"
-        columns={["Reference", "Company", "Contact", "Product", "Status", "Priority", "Received"]}
+        columns={["Reference", "Company", "Contact", "City", "Type", "Status", "Priority", "Received"]}
         empty="No enquiries match the current filters."
         rows={(data?.items || []).map((row) => (
           <tr key={row.id} className="cursor-pointer border-t border-[#8A8F96]/20 text-[14px] hover:bg-[#EDEDED]/50"
@@ -91,7 +91,8 @@ export default function AdminEnquiries() {
             <td className="tc-mono px-4 py-3 text-[#10A6D8]">{row.reference_number}</td>
             <td className="px-4 py-3">{row.company_name}</td>
             <td className="px-4 py-3">{row.name}</td>
-            <td className="px-4 py-3">{row.product_name || "—"}</td>
+            <td className="px-4 py-3">{row.city || "—"}</td>
+            <td className="px-4 py-3 text-[13px]">{(row.enquirer_type || "—").replace("_", " ")}</td>
             <td className="px-4 py-3"><StatusBadge value={row.status} /></td>
             <td className="px-4 py-3 uppercase text-[12px]">{row.priority}</td>
             <td className="px-4 py-3 text-[#8A8F96]">{new Date(row.created_at).toLocaleString()}</td>
@@ -106,9 +107,9 @@ export default function AdminEnquiries() {
             <dl className="grid gap-4 border border-[#8A8F96]/30 p-4 sm:grid-cols-2 text-[14px]">
               {[
                 ["Name", e.name], ["Company", e.company_name], ["Email", e.email], ["Phone", e.phone],
+                ["City", e.city || "—"], ["Enquirer type", (e.enquirer_type || "—").replace("_", " ")],
                 ["Product", e.product_name || "—"], ["Industry", e.industry_name || "—"],
-                ["Quantity", e.quantity ? `${e.quantity} ${e.quantity_unit || ""}` : "—"],
-                ["Timeline", e.expected_timeline || "—"], ["Source page", e.source_page || "—"],
+                ["Source page", e.source_page || "—"],
                 ["Received", new Date(e.created_at).toLocaleString()],
                 ["Notification", e.notification_status],
               ].map(([k, v]) => (
@@ -121,8 +122,9 @@ export default function AdminEnquiries() {
 
             <div>
               <p className="tc-eyebrow">Requirement</p>
-              <p className="mt-2 whitespace-pre-line border-l-2 border-[#10A6D8] bg-[#EDEDED]/50 p-4 text-[15px] text-[#3F434A]">{e.requirement}</p>
-              {e.notes && <p className="mt-3 text-[14px] text-[#3F434A]"><strong>Additional notes:</strong> {e.notes}</p>}
+              <p className="mt-2 whitespace-pre-line border-l-2 border-[#10A6D8] bg-[#EDEDED]/50 p-4 text-[15px] text-[#3F434A]">
+                {e.requirement || "Not provided"}
+              </p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">

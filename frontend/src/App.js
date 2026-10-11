@@ -5,6 +5,7 @@ import "@/App.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { SiteProvider } from "@/context/SiteContext";
 import PublicLayout from "@/components/site/PublicLayout";
+import { EnquiryModalProvider } from "@/components/site/EnquiryModal";
 import AdminLayout from "@/components/admin/AdminLayout";
 import Home from "@/pages/Home";
 import CmsPage from "@/pages/CmsPage";
@@ -43,6 +44,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <SiteProvider>
+          <EnquiryModalProvider>
           <ScrollToTop />
           <Toaster position="top-right" richColors />
           <Routes>
@@ -50,6 +52,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<CmsPage slug="about" eyebrow="Company" fallbackTitle="About Us" />} />
               <Route path="/technology" element={<CmsPage slug="technology" eyebrow="Engineering" fallbackTitle="Technology" />} />
+              <Route path="/sustainability" element={<CmsPage slug="sustainability" eyebrow="Responsible Growth" fallbackTitle="Sustainability" />} />
               <Route path="/privacy-policy" element={<CmsPage slug="privacy-policy" eyebrow="Legal" fallbackTitle="Privacy Policy" />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/category/:slug" element={<CategoryDetail />} />
@@ -77,6 +80,7 @@ function App() {
               <Route path="audit-logs" element={<AdminAuditLogs />} />
             </Route>
           </Routes>
+          </EnquiryModalProvider>
         </SiteProvider>
       </AuthProvider>
     </BrowserRouter>

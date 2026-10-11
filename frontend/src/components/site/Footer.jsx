@@ -28,6 +28,7 @@ export const Footer = () => {
             {[
               ["/about", "About Us"],
               ["/technology", "Technology"],
+              ["/sustainability", "Sustainability"],
               ["/directors", "Directors"],
               ["/contact", "Contact"],
             ].map(([to, label]) => (

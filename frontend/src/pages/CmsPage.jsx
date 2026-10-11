@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
 import useSWR from "swr";
 import { api } from "@/lib/api";
 import { usePageMeta } from "@/lib/seo";
 import { PageHero, Breadcrumbs, SectionHeading } from "@/components/site/Primitives";
+import { useEnquiryModal } from "@/components/site/EnquiryModal";
 
 const fetcher = (url) => api.get(url).then((r) => r.data);
 
 export default function CmsPage({ slug, eyebrow, fallbackTitle }) {
   const { data: page, error } = useSWR(`/pages/${slug}`, fetcher, { revalidateOnFocus: false });
+  const { openEnquiry } = useEnquiryModal();
   usePageMeta({ title: page?.seo_title || fallbackTitle, description: page?.seo_description });
 
   const sections = (page?.sections || []).filter((s) => s.body || s.heading);
@@ -29,7 +30,20 @@ export default function CmsPage({ slug, eyebrow, fallbackTitle }) {
             {sections.slice(1).map((s) => (
               <section key={s.key} data-testid={`cms-section-${s.key}`}>
                 <SectionHeading title={s.heading} eyebrow={s.subheading} as="h2" />
-                {s.body && <p className="mt-6 whitespace-pre-line text-[#3F434A]">{s.body}</p>}
+                {s.body && (
+                  (s.body.includes("\n") ? (
+                    <ul className="mt-6 space-y-3">
+                      {s.body.split("\n").map((line) => line.trim()).filter(Boolean).map((line) => (
+                        <li key={line} className="flex gap-3 text-[#3F434A]">
+                          <span className="mt-2.5 h-[3px] w-4 shrink-0 bg-[#10A6D8]" aria-hidden="true" />
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-6 text-[#3F434A]">{s.body}</p>
+                  ))
+                )}
                 {s.image_url && (
                   <img
                     src={s.image_url}
@@ -46,13 +60,11 @@ export default function CmsPage({ slug, eyebrow, fallbackTitle }) {
             <p className="text-[#3F434A]">
               Have a requirement or a technical question? Our team will review your application details and respond.
             </p>
-            <div className="mt-6 flex flex-wrap gap-4">
-              <Link to="/request-quote" className="tc-btn-primary" data-testid="cms-page-quote-cta">
+            <div className="mt-6">
+              <button type="button" className="tc-btn-primary" data-testid="cms-page-quote-cta"
+                onClick={() => openEnquiry({ title: "Request a Quote" })}>
                 Request a Quote
-              </Link>
-              <Link to="/contact" className="tc-btn-outline" data-testid="cms-page-contact-cta">
-                Contact Us
-              </Link>
+              </button>
             </div>
           </div>
         </div>

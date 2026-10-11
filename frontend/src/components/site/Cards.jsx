@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useEnquiryModal } from "@/components/site/EnquiryModal";
 
-export const ProductCard = ({ product }) => (
+export const ProductCard = ({ product }) => {
+  const { openEnquiry } = useEnquiryModal();
+  return (
   <article className="tc-card group flex flex-col" data-testid={`product-card-${product.slug}`}>
     <div className="aspect-[4/3] w-full overflow-hidden bg-[#EDEDED]">
       {product.image_url ? (
@@ -44,17 +47,19 @@ export const ProductCard = ({ product }) => (
         >
           View Details <ArrowRight size={15} aria-hidden="true" />
         </Link>
-        <Link
-          to={`/request-quote?product=${product.slug}`}
+        <button
+          type="button"
+          onClick={() => openEnquiry({ title: `Request a Quote — ${product.name}`, productSlug: product.slug })}
           className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#10A6D8] hover:text-[#003B7A]"
           data-testid={`quote-product-${product.slug}`}
         >
           Request a Quote
-        </Link>
+        </button>
       </div>
     </div>
   </article>
-);
+  );
+};
 
 export const SimpleCard = ({ to, eyebrow, title, text, image, testId }) => (
   <Link to={to} className="tc-card group flex flex-col" data-testid={testId}>

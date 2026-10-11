@@ -8,6 +8,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from content_defaults import (HOME_SECTIONS, ABOUT_SECTIONS, TECHNOLOGY_SECTIONS,
+                              SUSTAINABILITY_SECTIONS, DIRECTORS)
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
 
@@ -22,6 +25,7 @@ CONTENT_STATUSES = [DRAFT, PUBLISHED, ARCHIVED]
 ENQUIRY_STATUSES = ["new", "notified", "in_progress", "responded", "qualified", "closed"]
 ENQUIRY_PRIORITIES = ["low", "normal", "high", "urgent"]
 ROLES = ["super_admin", "content_manager", "enquiry_manager"]
+ENQUIRER_TYPES = ["customer", "investor_analyst", "vendor", "job_seeker"]
 
 
 def new_id() -> str:
@@ -132,137 +136,92 @@ DEFAULT_SETTINGS = {
     ),
     "analytics_id": "",
     "map_embed_url": "",
+    "industries_hero_url": "",
     "pending_approval_note": "Contact details, address and logo are placeholders pending company approval.",
     "updated_at": now_iso(),
 }
 
-ABOUT_COPY = (
-    "TrueCore Technologies Pvt. Ltd. is an advanced materials company established to manufacture "
-    "high-performance PU products and develop long-term capabilities in engineered material solutions. "
-    "Our objective is to build a reliable Indian company serving critical industrial needs through "
-    "quality products, technical understanding and responsible growth."
-)
 
-DEFAULT_PAGES = [
+PAGE_DEFS = [
     {
-        "_id": new_id(),
-        "slug": "home",
-        "title": "Home",
-        "status": PUBLISHED,
+        "slug": "home", "title": "Home", "sections": HOME_SECTIONS,
         "seo_title": "TrueCore Technologies Pvt. Ltd. | Advanced Materials. A Stronger Tomorrow.",
         "seo_description": DEFAULT_SETTINGS["default_seo_description"],
-        "sections": [
-            {"key": "hero", "heading": "Advanced Materials. A Stronger Tomorrow.",
-             "subheading": "Manufacturers of High-Performance PU Products",
-             "body": "Engineered polyurethane solutions for demanding industrial applications.",
-             "image_url": ""},
-            {"key": "about", "heading": "About TrueCore", "subheading": "Engineered material solutions",
-             "body": ABOUT_COPY, "image_url": ""},
-            {"key": "offerings", "heading": "Core Offerings",
-             "subheading": "Engineered for application. Built for performance.",
-             "body": "High-performance PU products\nCustom engineered components\nIndustrial material solutions\nFuture-ready advanced materials",
-             "image_url": ""},
-            {"key": "technology", "heading": "Technology & Engineering Approach",
-             "subheading": "Material selection, application understanding, manufacturing and quality practices",
-             "body": "We assess the application requirement first, then select suitable polyurethane systems and manufacturing methods. Specific processes, equipment and quality practices are published only after company verification.",
-             "image_url": ""},
-            {"key": "why", "heading": "Why TrueCore", "subheading": "Substantiated, application-first engineering",
-             "body": "Application-specific material selection\nTechnical understanding of industrial requirements\nQuality-led manufacturing discipline\nResponsible, long-term growth",
-             "image_url": ""},
-            {"key": "cta", "heading": "Discuss your requirement",
-             "subheading": "Share drawings, specifications or application details",
-             "body": "Our team will review your requirement and respond with suitable product or custom-solution options.",
-             "image_url": ""},
-        ],
-        "updated_at": now_iso(),
     },
     {
-        "_id": new_id(),
-        "slug": "about",
-        "title": "About Us",
-        "status": PUBLISHED,
+        "slug": "about", "title": "About Us", "sections": ABOUT_SECTIONS,
         "seo_title": "About TrueCore Technologies Pvt. Ltd.",
-        "seo_description": "An advanced materials company manufacturing high-performance PU products and engineered material solutions.",
-        "sections": [
-            {"key": "overview", "heading": "Company Overview", "subheading": "", "body": ABOUT_COPY, "image_url": ""},
-            {"key": "vision", "heading": "Vision & Mission", "subheading": "Pending company approval",
-             "body": "", "image_url": ""},
-            {"key": "philosophy", "heading": "Business Philosophy", "subheading": "Customer and application first",
-             "body": "We work from the application requirement backwards: understand the operating conditions, select suitable material systems, and deliver products that remain reliable in service.",
-             "image_url": ""},
-            {"key": "manufacturing", "heading": "Manufacturing & Engineering Focus",
-             "subheading": "", "body": "Our focus is on polyurethane product manufacturing and engineered material development. Specific plant, equipment and capacity details will be published after verification.",
-             "image_url": ""},
-            {"key": "quality", "heading": "Quality Commitment", "subheading": "",
-             "body": "Quality is managed through documented product requirements, inspection at defined stages, and corrective action on deviations. Certification claims are published only when formally obtained.",
-             "image_url": ""},
-            {"key": "future", "heading": "Future Direction", "subheading": "",
-             "body": "We intend to expand our product range and technical capability progressively, in step with customer requirements and responsible investment.",
-             "image_url": ""},
-        ],
-        "updated_at": now_iso(),
+        "seo_description": ("An advanced materials company focused on engineered polymer solutions for "
+                            "Railways, Automotive, Mobility and Industrial applications."),
     },
     {
-        "_id": new_id(),
-        "slug": "technology",
-        "title": "Technology",
-        "status": PUBLISHED,
+        "slug": "technology", "title": "Technology", "sections": TECHNOLOGY_SECTIONS,
         "seo_title": "Technology & Engineering Approach | TrueCore Technologies",
-        "seo_description": "Our engineering-led approach to polyurethane material selection, product design, manufacturing and quality assurance.",
-        "sections": [
-            {"key": "materials", "heading": "Polyurethane & Engineered Materials", "subheading": "",
-             "body": "Polyurethane systems can be formulated across a wide hardness and performance range, which makes them suitable for wear, damping, sealing and load-bearing applications. Material selection is driven by the application, not by a single standard grade.",
-             "image_url": ""},
-            {"key": "assessment", "heading": "Application & Requirement Assessment", "subheading": "",
-             "body": "We review operating loads, contact conditions, environment, temperature exposure and expected service life before recommending a material or product configuration.",
-             "image_url": ""},
-            {"key": "design", "heading": "Product Design & Customisation", "subheading": "",
-             "body": "Products can be developed to customer drawings or jointly engineered from an application brief, including dimensions, profiles and mounting requirements.",
-             "image_url": ""},
-            {"key": "process", "heading": "Manufacturing Processes", "subheading": "",
-             "body": "Manufacturing method is selected to suit the part geometry and performance requirement. Verified process and equipment details will be published after company approval.",
-             "image_url": ""},
-            {"key": "quality", "heading": "Quality Assurance & Inspection", "subheading": "",
-             "body": "Inspection points are defined per product. Measurement and test capability is declared only where it is available in-house or through an approved partner.",
-             "image_url": ""},
-            {"key": "collaboration", "heading": "Technical Collaboration", "subheading": "",
-             "body": "We work with engineering and procurement teams on trials, iterative sampling and progressive qualification for critical applications.",
-             "image_url": ""},
-        ],
-        "updated_at": now_iso(),
+        "seo_description": ("An application-led technology approach combining material science, "
+                            "engineering insight and performance requirements."),
     },
     {
-        "_id": new_id(),
-        "slug": "privacy-policy",
-        "title": "Privacy Policy",
-        "status": PUBLISHED,
+        "slug": "sustainability", "title": "Sustainability", "sections": SUSTAINABILITY_SECTIONS,
+        "seo_title": "Sustainability | TrueCore Technologies Pvt. Ltd.",
+        "seo_description": ("Sustainability at TrueCore: responsible business development, long-term "
+                            "value creation and future-oriented strategy."),
+    },
+    {
+        "slug": "privacy-policy", "title": "Privacy Policy",
         "seo_title": "Privacy Policy | TrueCore Technologies Pvt. Ltd.",
         "seo_description": "How TrueCore Technologies collects, uses and retains information submitted through this website.",
         "sections": [
             {"key": "collection", "heading": "Information We Collect", "subheading": "",
-             "body": "When you submit an enquiry or quote request we collect your name, company name, business email, phone number and the requirement details you choose to share. We may also record the page from which the enquiry originated and the submission time.",
+             "body": ("When you submit an enquiry we collect your name, company name, email, phone "
+                      "number, city, the category you identify with and any requirement details you "
+                      "choose to share. We may also record the page from which the enquiry originated "
+                      "and the submission time."),
              "image_url": ""},
             {"key": "use", "heading": "Why We Collect It", "subheading": "",
-             "body": "Information is used solely to understand, respond to and follow up on your enquiry, and to maintain an internal record of business communication.",
+             "body": ("Information is used solely to understand, respond to and follow up on your "
+                      "enquiry, and to maintain an internal record of business communication."),
              "image_url": ""},
             {"key": "retention", "heading": "Retention", "subheading": "",
-             "body": "Enquiry records are retained for as long as required for business and legal purposes and are accessible only to authorised staff. Retention periods are configurable and reviewed periodically.",
+             "body": ("Enquiry records are retained for as long as required for business and legal "
+                      "purposes and are accessible only to authorised staff. Retention periods are "
+                      "configurable and reviewed periodically."),
              "image_url": ""},
             {"key": "requests", "heading": "Your Requests", "subheading": "",
-             "body": "You may contact us using the details on the Contact page to ask about the information we hold concerning your enquiry, or to request correction or deletion where applicable.",
+             "body": ("You may contact us using the details on the Contact page to ask about the "
+                      "information we hold concerning your enquiry, or to request correction or "
+                      "deletion where applicable."),
              "image_url": ""},
             {"key": "review", "heading": "Approval Status", "subheading": "",
-             "body": "This policy is a working draft. Final legal wording is subject to company review and applicable Indian data protection requirements.",
+             "body": ("This policy is a working draft. Final legal wording is subject to company review "
+                      "and applicable Indian data protection requirements."),
              "image_url": ""},
         ],
-        "updated_at": now_iso(),
     },
 ]
+
+
+def page_document(definition: dict) -> dict:
+    return {
+        "_id": new_id(),
+        "slug": definition["slug"],
+        "title": definition["title"],
+        "status": PUBLISHED,
+        "seo_title": definition["seo_title"],
+        "seo_description": definition["seo_description"],
+        "sections": [dict(s) for s in definition["sections"]],
+        "updated_at": now_iso(),
+    }
 
 
 async def seed_content():
     if not await db.site_settings.find_one({"_id": "site"}):
         await db.site_settings.insert_one(dict(DEFAULT_SETTINGS))
-    for page in DEFAULT_PAGES:
-        if not await db.page_content.find_one({"slug": page["slug"]}):
-            await db.page_content.insert_one(dict(page))
+    for definition in PAGE_DEFS:
+        if not await db.page_content.find_one({"slug": definition["slug"]}):
+            await db.page_content.insert_one(page_document(definition))
+    for director in DIRECTORS:
+        if not await db.directors.find_one({"name": director["name"]}):
+            await db.directors.insert_one({
+                "_id": new_id(), **director, "linkedin_url": "",
+                "status": PUBLISHED, "created_at": now_iso(),
+            })

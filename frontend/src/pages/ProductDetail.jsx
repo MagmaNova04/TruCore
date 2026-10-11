@@ -8,12 +8,14 @@ import { track } from "@/lib/analytics";
 import { Breadcrumbs, SectionHeading, Skeleton } from "@/components/site/Primitives";
 import { ProductCard } from "@/components/site/Cards";
 import { WhatsAppInline } from "@/components/site/WhatsApp";
+import { useEnquiryModal } from "@/components/site/EnquiryModal";
 import NotFound from "@/pages/NotFound";
 
 const fetcher = (url) => api.get(url).then((r) => r.data);
 
 export default function ProductDetail() {
   const { slug } = useParams();
+  const { openEnquiry } = useEnquiryModal();
   const { data, error, isLoading } = useSWR(`/products/${slug}`, fetcher, { revalidateOnFocus: false });
   const [active, setActive] = useState(0);
 
@@ -136,14 +138,14 @@ export default function ProductDetail() {
             )}
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                to={`/request-quote?product=${product.slug}`}
+              <button
+                type="button"
                 className="tc-btn-primary"
-                onClick={() => track("request_quote_click", { product_slug: product.slug })}
+                onClick={() => openEnquiry({ title: `Request a Quote — ${product.name}`, productSlug: product.slug })}
                 data-testid="product-request-quote"
               >
                 Request a Quote <ArrowRight size={16} aria-hidden="true" />
-              </Link>
+              </button>
               <WhatsAppInline context={`Product of interest: ${product.name}`} testId="product-whatsapp-button" />
             </div>
           </div>

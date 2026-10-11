@@ -5,12 +5,14 @@ import { usePageMeta } from "@/lib/seo";
 import { PageHero, Breadcrumbs, SectionHeading, EmptyState, Skeleton } from "@/components/site/Primitives";
 import { ProductCard } from "@/components/site/Cards";
 import { WhatsAppInline } from "@/components/site/WhatsApp";
+import { useEnquiryModal } from "@/components/site/EnquiryModal";
 import NotFound from "@/pages/NotFound";
 
 const fetcher = (url) => api.get(url).then((r) => r.data);
 
 export default function IndustryDetail() {
   const { slug } = useParams();
+  const { openEnquiry } = useEnquiryModal();
   const { data, error, isLoading } = useSWR(`/industries/${slug}`, fetcher, { revalidateOnFocus: false });
   const industry = data?.industry;
 
@@ -78,8 +80,7 @@ export default function IndustryDetail() {
                   title="No published products linked yet"
                   message="We can engineer a solution to your drawing or application brief."
                 />
-              )}
-            </div>
+              )}            </div>
           </section>
 
           <section className="mt-16 border-t border-[#8A8F96]/25 pt-10">
@@ -88,9 +89,10 @@ export default function IndustryDetail() {
               Share the operating conditions, loads and drawings. Our team will assess suitability and respond.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
-              <Link to={`/request-quote?industry=${industry.slug}`} className="tc-btn-primary" data-testid="industry-quote-cta">
+              <button type="button" className="tc-btn-primary" data-testid="industry-quote-cta"
+                onClick={() => openEnquiry({ title: `Enquiry — ${industry.name}`, industrySlug: industry.slug })}>
                 Request Engineering Support
-              </Link>
+              </button>
               <WhatsAppInline context={`Industry enquiry: ${industry.name}`} testId="industry-whatsapp-button" />
             </div>
           </section>

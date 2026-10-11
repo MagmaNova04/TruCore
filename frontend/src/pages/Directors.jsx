@@ -25,9 +25,9 @@ export default function Directors() {
       <div className="tc-section">
         <div className="tc-container">
           {data?.length ? (
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-8 lg:grid-cols-3">
               {data.map((d) => (
-                <article key={d.id} className="tc-card p-6" data-testid={`director-card-${d.id}`}>
+                <article key={d.id} className="tc-card flex flex-col p-6" data-testid={`director-card-${d.id}`}>
                   <div className="aspect-square w-28 overflow-hidden bg-[#EDEDED]">
                     {d.photo_url ? (
                       <img src={d.photo_url} alt={d.name} loading="lazy" className="h-full w-full object-cover" />
@@ -39,7 +39,7 @@ export default function Directors() {
                   </div>
                   <h2 className="mt-5 text-lg font-semibold">{d.name}</h2>
                   {d.designation && <p className="tc-eyebrow mt-1">{d.designation}</p>}
-                  {d.bio && <p className="mt-4 text-[15px] text-[#3F434A]">{d.bio}</p>}
+                  {d.bio && <p className="mt-4 whitespace-pre-line text-[15px] text-[#3F434A]">{d.bio}</p>}
                   {d.linkedin_url && (
                     <a
                       href={d.linkedin_url}

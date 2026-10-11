@@ -4,6 +4,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import useSWR from "swr";
 import { api } from "@/lib/api";
 import { useSite } from "@/context/SiteContext";
+import { useEnquiryModal } from "@/components/site/EnquiryModal";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -11,6 +12,7 @@ const NAV = [
   { to: "/products", label: "Products" },
   { to: "/industries", label: "Industries" },
   { to: "/technology", label: "Technology" },
+  { to: "/sustainability", label: "Sustainability" },
   { to: "/directors", label: "Directors" },
   { to: "/contact", label: "Contact" },
 ];
@@ -22,6 +24,7 @@ export const Header = () => {
   const [catsOpen, setCatsOpen] = useState(false);
   const { pathname } = useLocation();
   const { settings } = useSite();
+  const { openEnquiry } = useEnquiryModal();
   const { data: categories } = useSWR("/categories", fetcher, { revalidateOnFocus: false });
 
   useEffect(() => {
@@ -30,7 +33,7 @@ export const Header = () => {
   }, [pathname]);
 
   const linkClass = ({ isActive }) =>
-    `relative py-2 text-[14px] font-medium transition-colors ${
+    `relative py-2 text-[13px] font-medium transition-colors xl:text-[14px] ${
       isActive ? "text-[#10A6D8]" : "text-[#3F434A] hover:text-[#10A6D8]"
     }`;
 
@@ -56,7 +59,7 @@ export const Header = () => {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-4 lg:flex xl:gap-6" aria-label="Primary">
           {NAV.map((item) =>
             item.to === "/products" && categories?.length ? (
               <div
@@ -100,9 +103,14 @@ export const Header = () => {
               </NavLink>
             )
           )}
-          <Link to="/request-quote" className="tc-btn-primary !py-2.5" data-testid="header-enquire-button">
+          <button
+            type="button"
+            onClick={() => openEnquiry({ title: "Enquire Now" })}
+            className="tc-btn-primary !py-2.5 !text-[12px]"
+            data-testid="header-enquire-button"
+          >
             Enquire Now
-          </Link>
+          </button>
         </nav>
 
         <button
@@ -134,13 +142,14 @@ export const Header = () => {
                 {item.label}
               </NavLink>
             ))}
-            <Link
-              to="/request-quote"
+            <button
+              type="button"
+              onClick={() => openEnquiry({ title: "Enquire Now" })}
               className="tc-btn-primary mt-4 w-full"
               data-testid="mobile-enquire-button"
             >
               Enquire Now
-            </Link>
+            </button>
           </div>
         </nav>
       )}

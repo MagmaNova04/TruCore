@@ -68,7 +68,7 @@ export default function Contact() {
             <h2 className="text-xl font-semibold">Send an enquiry</h2>
             <p className="mt-2 text-[15px] text-[#3F434A]">Fields marked with * are required.</p>
             <div className="mt-6">
-              <EnquiryForm compact sourcePage="/contact" />
+              <EnquiryForm sourcePage="/contact" />
             </div>
           </div>
         </div>

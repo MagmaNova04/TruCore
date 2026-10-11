@@ -7,6 +7,7 @@ import { usePageMeta, useStructuredData } from "@/lib/seo";
 import { SectionHeading } from "@/components/site/Primitives";
 import { ProductCard, SimpleCard } from "@/components/site/Cards";
 import { WhatsAppInline } from "@/components/site/WhatsApp";
+import { useEnquiryModal } from "@/components/site/EnquiryModal";
 
 const fetcher = (url) => api.get(url).then((r) => r.data);
 const OFFERING_ICONS = [Layers, Cog, Boxes, Microscope];
@@ -16,6 +17,7 @@ const lines = (body) => (body || "").split("\n").map((l) => l.trim()).filter(Boo
 
 export default function Home() {
   const { settings } = useSite();
+  const { openEnquiry } = useEnquiryModal();
   const { data: page } = useSWR("/pages/home", fetcher, { revalidateOnFocus: false });
   const { data: categories } = useSWR("/categories", fetcher, { revalidateOnFocus: false });
   const { data: industries } = useSWR("/industries", fetcher, { revalidateOnFocus: false });
@@ -62,21 +64,26 @@ export default function Home() {
               <Link to="/products" className="tc-btn-primary" data-testid="hero-explore-products">
                 Explore Products <ArrowRight size={16} aria-hidden="true" />
               </Link>
-              <Link to="/request-quote" className="tc-btn-outline" data-testid="hero-request-quote">
+              <button type="button" className="tc-btn-outline" data-testid="hero-request-quote"
+                onClick={() => openEnquiry({ title: "Request a Quote" })}>
                 Request a Quote
-              </Link>
+              </button>
             </div>
-            <dl className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-[#8A8F96]/25 pt-6">
-              {[
-                ["Application", "Led engineering"],
-                ["PU Systems", "Wear · Damping · Sealing"],
-                ["Sectors", "Rail · Auto · Industrial"],
-              ].map(([k, v]) => (
-                <div key={k}>
-                  <dt className="tc-eyebrow">{k}</dt>
-                  <dd className="mt-1 text-[13px] font-medium text-[#3F434A]">{v}</dd>
-                </div>
-              ))}
+            <dl className="mt-12 grid max-w-2xl gap-8 border-t border-[#8A8F96]/25 pt-7 sm:grid-cols-3">
+              {[section(page, "hero_applications"), section(page, "hero_materials"), section(page, "hero_sectors")]
+                .filter(Boolean)
+                .map((block) => (
+                  <div key={block.key} data-testid={`hero-block-${block.key}`}>
+                    <dt className="tc-eyebrow">{block.heading}</dt>
+                    <dd className="mt-3 space-y-1.5">
+                      {lines(block.body).map((item) => (
+                        <span key={item} className="block text-[13.5px] font-medium text-[#3F434A]">
+                          {item}
+                        </span>
+                      ))}
+                    </dd>
+                  </div>
+                ))}
             </dl>
           </div>
           <div className="tc-reveal relative" style={{ animationDelay: "120ms" }}>
@@ -240,9 +247,10 @@ export default function Home() {
             <p className="mt-4 text-[#3F434A]">{cta?.body}</p>
           </div>
           <div className="flex flex-wrap gap-4">
-            <Link to="/request-quote" className="tc-btn-primary" data-testid="home-cta-quote">
+            <button type="button" className="tc-btn-primary" data-testid="home-cta-quote"
+              onClick={() => openEnquiry({ title: "Request a Quote" })}>
               Request a Quote
-            </Link>
+            </button>
             <WhatsAppInline testId="home-cta-whatsapp" />
           </div>
         </div>

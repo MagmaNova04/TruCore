@@ -1,14 +1,12 @@
-import { useSearchParams } from "react-router-dom";
 import { usePageMeta } from "@/lib/seo";
 import { PageHero, Breadcrumbs } from "@/components/site/Primitives";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
 import { WhatsAppInline } from "@/components/site/WhatsApp";
 
 export default function RequestQuote() {
-  const [params] = useSearchParams();
   usePageMeta({
     title: "Request a Quote | TrueCore Technologies Pvt. Ltd.",
-    description: "Request a quotation for polyurethane products, engineered components or a custom material solution.",
+    description: "Request a quotation for engineered polymer components, advanced polymer products or a custom material solution.",
   });
 
   return (
@@ -23,11 +21,7 @@ export default function RequestQuote() {
       <div className="tc-section">
         <div className="tc-container grid gap-12 lg:grid-cols-[1.25fr_0.75fr]">
           <div className="border border-[#8A8F96]/30 p-6 lg:p-8">
-            <EnquiryForm
-              sourcePage="/request-quote"
-              initialProduct={params.get("product") || ""}
-              initialIndustry={params.get("industry") || ""}
-            />
+            <EnquiryForm sourcePage="/request-quote" />
           </div>
           <aside className="space-y-8">
             <div className="border-l-2 border-[#10A6D8] bg-[#EDEDED]/60 p-6">

@@ -130,6 +130,7 @@ class SettingsIn(BaseModel):
     default_seo_description: str | None = Field(default=None, max_length=320)
     analytics_id: str | None = Field(default=None, max_length=60)
     map_embed_url: str | None = Field(default=None, max_length=800)
+    industries_hero_url: str | None = Field(default=None, max_length=600)
     pending_approval_note: str | None = Field(default=None, max_length=400)
 
 
@@ -482,8 +483,8 @@ async def export_enquiries(admin: dict = Depends(require_enquiry)):
     docs = await db.enquiries.find({}).sort("created_at", -1).to_list(5000)
     buffer = io.StringIO()
     fields = ["reference_number", "created_at", "status", "priority", "name", "company_name",
-              "email", "phone", "product_name", "industry_name", "quantity", "quantity_unit",
-              "expected_timeline", "requirement", "source_page"]
+              "email", "phone", "city", "enquirer_type", "product_name", "industry_name",
+              "requirement", "source_page"]
     writer = csv.DictWriter(buffer, fieldnames=fields, extrasaction="ignore")
     writer.writeheader()
     for d in docs:
